@@ -1,0 +1,22 @@
+export const USER_ROLES = {
+    ADMIN: "ADMIN",
+    USER: "USER",
+    DRIVER: "DRIVER"
+};
+
+export const REQUEST_STATUS = {
+    PENDING: "PENDING",
+    DISPATCHED: "DISPATCHED",
+    ENROUTE: "ENROUTE",
+    ARRIVED: "ARRIVED",
+    PICKED_UP: "PICKED_UP",
+    COMPLETED: "COMPLETED",
+    CANCELLED: "CANCELLED"
+};
+
+export const EMERGENCY_TYPES = {
+    ACCIDENT: "ACCIDENT",
+    HEART_ATTACK: "HEART_ATTACK",
+    FIRE: "FIRE",
+    OTHER: "OTHER"
+};
