@@ -1,11 +1,19 @@
-export const authorizeRoles = (...roles) => {
+export const authorize = (...allowedRoles) => {
     return (req, res, next) => {
-        if (!roles.includes(req.user.role)) {
-            return res.status(403).json({
+        if (!req.user) {
+            return res.status(401).json({
                 success: false,
-                message: "Access denied"
+                message: "Not authorized"
             });
         }
+
+        if (!allowedRoles.includes(req.user.role)) {
+            return res.status(403).json({
+                success: false,
+                message: "Access denied. Insufficient role."
+            });
+        }
+
         next();
     };
 };
