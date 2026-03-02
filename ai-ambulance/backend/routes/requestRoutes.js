@@ -1,5 +1,6 @@
 import express from "express";
 import { protect } from "../middleware/authMiddleware.js";
+import { authorizeRoles } from "../middleware/authorizeRoles.js";
 
 import {
     createRequest,
@@ -9,19 +10,40 @@ import {
 
 const router = express.Router();
 
-// ==========================================
-// ✅ Create Emergency Request (USER)
-// ==========================================
-router.post("/", protect, createRequest);
+/*
+====================================================
+🧑 USER ROUTES
+====================================================
+*/
 
-// ==========================================
-// ✅ Get My Requests (USER)
-// ==========================================
-router.get("/my", protect, getMyRequests);
+// ✅ Create Emergency Request (Only USER)
+router.post(
+    "/",
+    protect,
+    authorizeRoles("USER"),
+    createRequest
+);
 
-// ==========================================
-// ✅ Update Request Status (Day 6)
-// ==========================================
-router.patch("/:id/status", protect, updateRequestStatus);
+// ✅ Get My Requests (Only USER)
+router.get(
+    "/my",
+    protect,
+    authorizeRoles("USER"),
+    getMyRequests
+);
+
+/*
+====================================================
+🚑 DRIVER ROUTES
+====================================================
+*/
+
+// ✅ Update Request Status (Only DRIVER)
+router.patch(
+    "/:id/status",
+    protect,
+    authorizeRoles("DRIVER"),
+    updateRequestStatus
+);
 
 export default router;

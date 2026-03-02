@@ -26,10 +26,12 @@ export const createRequest = async (req, res) => {
                 type: "Point",
                 coordinates: [Number(longitude), Number(latitude)],
             },
+            status: "PENDING",
             history: [
                 {
                     status: "PENDING",
                     changedAt: new Date(),
+                    changedBy: req.user._id,
                 },
             ],
         });
@@ -72,7 +74,7 @@ export const getMyRequests = async (req, res) => {
 };
 
 // ==========================================
-// ✅ UPDATE REQUEST STATUS (Day 6)
+// ✅ UPDATE REQUEST STATUS (Phase 5 Final)
 // ==========================================
 export const updateRequestStatus = async (req, res) => {
     try {
@@ -89,18 +91,17 @@ export const updateRequestStatus = async (req, res) => {
         }
 
         const currentStatus = request.status;
+        const userRole = req.user.role;
 
-        // 🚫 Role restriction — USER can only cancel PENDING
-        if (req.user.role === "USER") {
-            if (status !== "CANCELLED" || currentStatus !== "PENDING") {
-                return res.status(403).json({
-                    success: false,
-                    message: "Users can only cancel pending requests",
-                });
-            }
+        // 🚫 Prevent updates after final states
+        if (["COMPLETED", "CANCELLED"].includes(currentStatus)) {
+            return res.status(400).json({
+                success: false,
+                message: `Cannot update a ${currentStatus} request`,
+            });
         }
 
-        // 🚫 Check if transition allowed
+        // 🚫 Validate transition using state machine
         if (!ALLOWED_TRANSITIONS[currentStatus]?.includes(status)) {
             return res.status(400).json({
                 success: false,
@@ -108,13 +109,73 @@ export const updateRequestStatus = async (req, res) => {
             });
         }
 
-        // ✅ Update status
+        // ===============================
+        // 🔐 CANCELLATION RULES
+        // ===============================
+        if (status === "CANCELLED") {
+
+            // USER can cancel only PENDING
+            if (currentStatus === "PENDING" && userRole !== "USER") {
+                return res.status(403).json({
+                    success: false,
+                    message: "Only user can cancel a PENDING request",
+                });
+            }
+
+            // ADMIN can cancel only DISPATCHED
+            if (currentStatus === "DISPATCHED" && userRole !== "ADMIN") {
+                return res.status(403).json({
+                    success: false,
+                    message: "Only admin can cancel a DISPATCHED request",
+                });
+            }
+
+            // Block cancellation at later stages
+            if (!["PENDING", "DISPATCHED"].includes(currentStatus)) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Cannot cancel at this stage",
+                });
+            }
+        }
+
+        // ===============================
+        // 🚑 DRIVER STATUS RULES
+        // ===============================
+        if (["ENROUTE", "ARRIVED", "PICKED_UP", "COMPLETED"].includes(status)) {
+
+            if (userRole !== "DRIVER") {
+                return res.status(403).json({
+                    success: false,
+                    message: "Only assigned driver can update travel status",
+                });
+            }
+
+            if (!request.assignedDriver) {
+                return res.status(403).json({
+                    success: false,
+                    message: "No driver assigned to this request",
+                });
+            }
+
+            if (request.assignedDriver.toString() !== req.user._id.toString()) {
+                return res.status(403).json({
+                    success: false,
+                    message: "Driver not assigned to this request",
+                });
+            }
+        }
+
+        // ===============================
+        // ✅ Update Status
+        // ===============================
         request.status = status;
 
-        // 📜 Add history entry
+        // 📜 Add history log
         request.history.push({
             status,
             changedAt: new Date(),
+            changedBy: req.user._id,
         });
 
         await request.save();

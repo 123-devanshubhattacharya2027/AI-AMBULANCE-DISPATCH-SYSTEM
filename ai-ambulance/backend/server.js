@@ -8,17 +8,30 @@ import morgan from "morgan";
 import authRoutes from "./routes/authRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import driverRoutes from "./routes/driverRoutes.js";
-import requestRoutes from "./routes/requestRoutes.js"; // ✅ ADDED
+import requestRoutes from "./routes/requestRoutes.js";
 import { protect } from "./middleware/authMiddleware.js";
 
 dotenv.config();
 
 const app = express();
 
+// ==============================
+// Middlewares
+// ==============================
 app.use(express.json());
 app.use(cors());
 app.use(helmet());
 app.use(morgan("dev"));
+
+// ==============================
+// Health Route (ADD HERE ✅)
+// ==============================
+app.get("/api/health", (req, res) => {
+    res.status(200).json({
+        success: true,
+        message: "Server is running 🚑"
+    });
+});
 
 // ==============================
 // MongoDB Connection
@@ -28,7 +41,7 @@ mongoose.connect("mongodb://localhost:27017/ambulanceDB")
     .catch((err) => console.log("MongoDB Error ❌", err));
 
 // ==============================
-// Protected route (any logged-in user)
+// Protected Test Route
 // ==============================
 app.get("/api/protected", protect, (req, res) => {
     res.json({
@@ -39,18 +52,24 @@ app.get("/api/protected", protect, (req, res) => {
 });
 
 // ==============================
-// Route Mounting Section
+// Route Mounting
 // ==============================
 app.use("/api/auth", authRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/drivers", driverRoutes);
-app.use("/api/requests", requestRoutes); // ✅ NEW
+app.use("/api/requests", requestRoutes);
 
+// ==============================
+// Root Route
+// ==============================
 app.get("/", (req, res) => {
     res.send("AI Ambulance Backend Running 🚑");
 });
 
-const PORT = 5000;
+// ==============================
+// Start Server
+// ==============================
+const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
