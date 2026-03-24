@@ -1,5 +1,7 @@
 import EmergencyRequest from "../models/EmergencyRequest.js";
 import { ALLOWED_TRANSITIONS } from "../constants/statusTransitions.js";
+import User from "../models/User.js";
+
 
 // ==========================================
 // ✅ CREATE EMERGENCY REQUEST
@@ -8,7 +10,6 @@ export const createRequest = async (req, res) => {
     try {
         const { emergencyType, description, location } = req.body;
 
-        // Validate location
         if (!location || !location.coordinates) {
             return res.status(400).json({
                 success: false,
@@ -36,6 +37,10 @@ export const createRequest = async (req, res) => {
             ],
         });
 
+        // 🔥 STEP 8.5 → EMIT NEW REQUEST TO ADMIN
+        const io = req.app.get("io");
+        io.to("admin").emit("new_request", request);
+
         res.status(201).json({
             success: true,
             message: "Emergency request created successfully",
@@ -49,6 +54,7 @@ export const createRequest = async (req, res) => {
         });
     }
 };
+
 
 // ==========================================
 // ✅ GET MY REQUESTS (User only)
@@ -73,8 +79,9 @@ export const getMyRequests = async (req, res) => {
     }
 };
 
+
 // ==========================================
-// ✅ UPDATE REQUEST STATUS (Phase 5 Final)
+// ✅ UPDATE REQUEST STATUS
 // ==========================================
 export const updateRequestStatus = async (req, res) => {
     try {
@@ -93,7 +100,6 @@ export const updateRequestStatus = async (req, res) => {
         const currentStatus = request.status;
         const userRole = req.user.role;
 
-        // 🚫 Prevent updates after final states
         if (["COMPLETED", "CANCELLED"].includes(currentStatus)) {
             return res.status(400).json({
                 success: false,
@@ -101,7 +107,6 @@ export const updateRequestStatus = async (req, res) => {
             });
         }
 
-        // 🚫 Validate transition using state machine
         if (!ALLOWED_TRANSITIONS[currentStatus]?.includes(status)) {
             return res.status(400).json({
                 success: false,
@@ -114,7 +119,6 @@ export const updateRequestStatus = async (req, res) => {
         // ===============================
         if (status === "CANCELLED") {
 
-            // USER can cancel only PENDING
             if (currentStatus === "PENDING" && userRole !== "USER") {
                 return res.status(403).json({
                     success: false,
@@ -122,7 +126,6 @@ export const updateRequestStatus = async (req, res) => {
                 });
             }
 
-            // ADMIN can cancel only DISPATCHED
             if (currentStatus === "DISPATCHED" && userRole !== "ADMIN") {
                 return res.status(403).json({
                     success: false,
@@ -130,7 +133,6 @@ export const updateRequestStatus = async (req, res) => {
                 });
             }
 
-            // Block cancellation at later stages
             if (!["PENDING", "DISPATCHED"].includes(currentStatus)) {
                 return res.status(400).json({
                     success: false,
@@ -171,7 +173,6 @@ export const updateRequestStatus = async (req, res) => {
         // ===============================
         request.status = status;
 
-        // 📜 Add history log
         request.history.push({
             status,
             changedAt: new Date(),
@@ -180,9 +181,88 @@ export const updateRequestStatus = async (req, res) => {
 
         await request.save();
 
+        // 🔥 STEP 8.6 → EMIT STATUS UPDATE
+        const io = req.app.get("io");
+
+        io.emit("status_update", request);
+
+        // Optional: send to specific user
+        io.to(`user:${request.user}`).emit("status_update", request);
+
         res.json({
             success: true,
             message: "Status updated successfully",
+            data: request,
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message,
+        });
+    }
+};
+
+
+// ==========================================
+// ✅ ASSIGN DRIVER (ADMIN)
+// ==========================================
+export const assignDriver = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { driverId } = req.body;
+
+        const request = await EmergencyRequest.findById(id);
+
+        if (!request) {
+            return res.status(404).json({
+                success: false,
+                message: "Request not found",
+            });
+        }
+
+        const driver = await User.findById(driverId);
+
+        if (!driver) {
+            return res.status(404).json({
+                success: false,
+                message: "Driver not found",
+            });
+        }
+
+        if (driver.role !== "DRIVER") {
+            return res.status(400).json({
+                success: false,
+                message: "Assigned user is not a driver",
+            });
+        }
+
+        if (request.status !== "PENDING") {
+            return res.status(400).json({
+                success: false,
+                message: "Driver can only be assigned to PENDING requests",
+            });
+        }
+
+        request.assignedDriver = driverId;
+        request.status = "DISPATCHED";
+
+        request.history.push({
+            status: "DISPATCHED",
+            changedAt: new Date(),
+            changedBy: req.user._id,
+        });
+
+        await request.save();
+
+        // 🔥 STEP 8.7 → EMIT DRIVER ASSIGNMENT
+        const io = req.app.get("io");
+
+        io.to(`driver:${driverId}`).emit("assign_driver", request);
+
+        res.json({
+            success: true,
+            message: "Driver assigned successfully",
             data: request,
         });
 

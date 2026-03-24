@@ -5,7 +5,8 @@ import { authorizeRoles } from "../middleware/authorizeRoles.js";
 import {
     createRequest,
     getMyRequests,
-    updateRequestStatus
+    updateRequestStatus,
+    assignDriver
 } from "../controllers/requestController.js";
 
 const router = express.Router();
@@ -34,15 +35,30 @@ router.get(
 
 /*
 ====================================================
-🚑 DRIVER ROUTES
+🚑 ADMIN ROUTES
 ====================================================
 */
 
-// ✅ Update Request Status (Only DRIVER)
+// ✅ Assign Driver to Request (Only ADMIN)
+router.patch(
+    "/:id/assign-driver",
+    protect,
+    authorizeRoles("ADMIN"),
+    assignDriver
+);
+
+/*
+====================================================
+🚑 STATUS MANAGEMENT
+====================================================
+*/
+
+// ✅ Update Request Status (USER / DRIVER / ADMIN)
+// Controller decides permission logic
 router.patch(
     "/:id/status",
     protect,
-    authorizeRoles("DRIVER"),
+    authorizeRoles("USER", "DRIVER", "ADMIN"),
     updateRequestStatus
 );
 

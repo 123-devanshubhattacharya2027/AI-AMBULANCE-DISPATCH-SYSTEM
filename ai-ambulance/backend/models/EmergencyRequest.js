@@ -3,35 +3,30 @@ import { REQUEST_STATUS, EMERGENCY_TYPES } from "../constants/enums.js";
 
 const emergencyRequestSchema = new mongoose.Schema(
   {
-    // 👤 User who created request
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
 
-    // 🚑 Assigned driver (null initially)
     assignedDriver: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Driver",
       default: null,
     },
 
-    // 🚨 Type of emergency
     emergencyType: {
       type: String,
       enum: Object.values(EMERGENCY_TYPES),
       required: true,
     },
 
-    // 📝 Description
     description: {
       type: String,
       required: true,
       trim: true,
     },
 
-    // 🌍 Location (GeoJSON format)
     location: {
       type: {
         type: String,
@@ -39,7 +34,7 @@ const emergencyRequestSchema = new mongoose.Schema(
         default: "Point",
       },
       coordinates: {
-        type: [Number], // [longitude, latitude]
+        type: [Number],
         required: true,
         validate: {
           validator: function (val) {
@@ -50,14 +45,12 @@ const emergencyRequestSchema = new mongoose.Schema(
       },
     },
 
-    // 📌 Current Status
     status: {
       type: String,
       enum: Object.values(REQUEST_STATUS),
       default: REQUEST_STATUS.PENDING,
     },
 
-    // 📜 Status History (For Day 6 Status Machine)
     history: [
       {
         status: {
@@ -71,7 +64,6 @@ const emergencyRequestSchema = new mongoose.Schema(
       },
     ],
 
-    // 🤖 AI Fields (Day 18 Ready)
     severityScore: {
       type: Number,
       default: 0,
@@ -82,13 +74,19 @@ const emergencyRequestSchema = new mongoose.Schema(
       default: 0,
     },
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+
+    // ✅ STEP 6 OPTIMIZATION (IMPORTANT)
+    toJSON: { versionKey: false },
+    toObject: { versionKey: false },
+  }
 );
 
-// 🌍 GEO INDEX for location search
+// 🌍 GEO INDEX (for Day 18 - AI)
 emergencyRequestSchema.index({ location: "2dsphere" });
 
-// ⚡ Index for faster filtering by status
-emergencyRequestSchema.index({ status: 1 });
+// ⚡ DAY 9 OPTIMIZED INDEX (IMPORTANT)
+emergencyRequestSchema.index({ status: 1, createdAt: -1 });
 
 export default mongoose.model("EmergencyRequest", emergencyRequestSchema);

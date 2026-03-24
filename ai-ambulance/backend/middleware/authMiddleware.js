@@ -5,7 +5,12 @@ export const protect = async (req, res, next) => {
     try {
         let token;
 
-        if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
+        console.log("AUTH HEADER:", req.headers.authorization);
+
+        if (
+            req.headers.authorization &&
+            req.headers.authorization.startsWith("Bearer ")
+        ) {
             token = req.headers.authorization.split(" ")[1];
         }
 
@@ -21,10 +26,11 @@ export const protect = async (req, res, next) => {
             return res.status(401).json({ success: false, message: "User not found" });
         }
 
-        req.user = user; // attach user to request
+        req.user = user;
 
         next();
     } catch (error) {
+        console.log("ERROR:", error.message);
         res.status(401).json({ success: false, message: "Token invalid" });
     }
-}; 
+};
