@@ -5,13 +5,14 @@ import { authorizeRoles } from "../middleware/authorizeRoles.js";
 import {
     getAllRequests,
     getRequestById,
+    assignDriver, // ✅ Day 10 import
 } from "../controllers/adminController.js";
 
 const router = express.Router();
 
 /*
 ====================================================
-🚨 REQUEST MANAGEMENT (DAY 9 ONLY)
+🚨 REQUEST MANAGEMENT (DAY 9 + DAY 10)
 ====================================================
 */
 
@@ -29,6 +30,14 @@ router.get(
     protect,
     authorizeRoles("ADMIN"),
     getRequestById
+);
+
+// 🚑 DAY 10 — Assign Driver to Request
+router.patch(
+    "/requests/:id/assign-driver",
+    protect,
+    authorizeRoles("ADMIN"),
+    assignDriver
 );
 
 export default router;
