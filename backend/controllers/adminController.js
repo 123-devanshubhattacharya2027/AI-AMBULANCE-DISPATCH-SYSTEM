@@ -1,92 +1,90 @@
 import mongoose from "mongoose";
+import asyncHandler from "express-async-handler";
 import EmergencyRequest from "../models/EmergencyRequest.js";
 import Driver from "../models/Driver.js";
 import { REQUEST_STATUS } from "../constants/enums.js";
 
-
 // ==========================================
 // ✅ GET ALL REQUESTS (Admin)
 // ==========================================
-export const getAllRequests = async (req, res) => {
-    try {
-        const {
-            status,
-            emergencyType,
-            page = 1,
-            limit = 10,
-            sortBy = "createdAt",
-            order = "desc"
-        } = req.query;
+export const getAllRequests = asyncHandler(async (req, res) => {
+    const {
+        status,
+        emergencyType,
+        page = 1,
+        limit = 10,
+        sortBy = "createdAt",
+        order = "desc"
+    } = req.query;
 
-        const pageNum = Math.max(1, parseInt(page));
-        const limitNum = Math.max(1, parseInt(limit));
-        const skip = (pageNum - 1) * limitNum;
+    const pageNum = Math.max(1, parseInt(page));
+    const limitNum = Math.max(1, parseInt(limit));
+    const skip = (pageNum - 1) * limitNum;
 
-        const filter = {};
-        if (status) filter.status = status;
-        if (emergencyType) filter.emergencyType = emergencyType;
+    const filter = {};
+    if (status) filter.status = status;
+    if (emergencyType) filter.emergencyType = emergencyType;
 
-        const sortOrder = order === "asc" ? 1 : -1;
+    const sortOrder = order === "asc" ? 1 : -1;
 
-        const [requests, total] = await Promise.all([
-            EmergencyRequest.find(filter)
-                .populate("user", "name email")
-                .populate({
-                    path: "assignedDriver",
-                    populate: { path: "user", select: "name email" }
-                })
-                .sort({ [sortBy]: sortOrder })
-                .skip(skip)
-                .limit(limitNum)
-                .lean(),
+    const [requests, total] = await Promise.all([
+        EmergencyRequest.find(filter)
+            .populate("user", "name email")
+            .populate({
+                path: "assignedDriver",
+                populate: { path: "user", select: "name email" }
+            })
+            .sort({ [sortBy]: sortOrder })
+            .skip(skip)
+            .limit(limitNum)
+            .lean(),
 
-            EmergencyRequest.countDocuments(filter),
-        ]);
+        EmergencyRequest.countDocuments(filter),
+    ]);
 
-        res.json({
-            success: true,
+    res.status(200).json({
+        success: true,
+        message: "Requests fetched successfully",
+        data: {
             count: requests.length,
             total,
             totalPages: Math.ceil(total / limitNum),
             currentPage: pageNum,
-            data: requests,
-        });
-
-    } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
-    }
-};
+            requests
+        },
+    });
+});
 
 
 // ==========================================
 // ✅ GET SINGLE REQUEST
 // ==========================================
-export const getRequestById = async (req, res) => {
-    try {
-        const request = await EmergencyRequest.findById(req.params.id)
-            .populate("user", "name email phone")
-            .populate({
-                path: "assignedDriver",
-                populate: { path: "user", select: "name email phone" }
-            })
-            .lean();
+export const getRequestById = asyncHandler(async (req, res) => {
+    const request = await EmergencyRequest.findById(req.params.id)
+        .populate("user", "name email phone")
+        .populate({
+            path: "assignedDriver",
+            populate: { path: "user", select: "name email phone" }
+        })
+        .lean();
 
-        if (!request) {
-            return res.status(404).json({ success: false, message: "Request not found" });
-        }
-
-        res.json({ success: true, data: request });
-
-    } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
+    if (!request) {
+        res.status(404);
+        throw new Error("Request not found");
     }
-};
+
+    res.status(200).json({
+        success: true,
+        message: "Request fetched successfully",
+        data: request
+    });
+});
 
 
 // ==========================================
-// 🚑 ASSIGN DRIVER (MANUAL)
+// 🚑 ASSIGN DRIVER (MANUAL - ADVANCED)
 // ==========================================
-export const assignDriver = async (req, res) => {
+export const assignDriver = asyncHandler(async (req, res) => {
     const session = await mongoose.startSession();
     session.startTransaction();
 
@@ -95,19 +93,23 @@ export const assignDriver = async (req, res) => {
         const { driverId } = req.body;
 
         const request = await EmergencyRequest.findById(id).session(session);
-        if (!request) throw new Error("Request not found");
+        if (!request) {
+            res.status(404);
+            throw new Error("Request not found");
+        }
 
         if (request.status !== REQUEST_STATUS.PENDING) {
+            res.status(400);
             throw new Error("Only PENDING requests can be assigned");
         }
 
         const driver = await Driver.findById(driverId).session(session);
 
         if (!driver || !driver.isAvailable) {
+            res.status(400);
             throw new Error("Driver not available");
         }
 
-        // ✅ Assign
         request.assignedDriver = driver._id;
         request.status = REQUEST_STATUS.DISPATCHED;
 
@@ -118,7 +120,6 @@ export const assignDriver = async (req, res) => {
             updatedAt: new Date(),
         });
 
-        // ✅ Driver OFF
         driver.isAvailable = false;
 
         await request.save({ session });
@@ -127,7 +128,6 @@ export const assignDriver = async (req, res) => {
         await session.commitTransaction();
         session.endSession();
 
-        // 🔥 Socket
         const io = req.app.get("io");
 
         if (io) {
@@ -135,43 +135,73 @@ export const assignDriver = async (req, res) => {
             io.to("admin").emit("request_assigned", request);
         }
 
-        res.json({
+        res.status(200).json({
             success: true,
-            message: "Driver assigned successfully 🚑",
+            message: "Driver assigned successfully",
             data: request,
         });
 
-    } catch (error) {
+    } catch (err) {
         await session.abortTransaction();
         session.endSession();
-
-        res.status(400).json({ success: false, message: error.message });
+        throw err; // 🔥 IMPORTANT (not next(err))
     }
-};
+});
 
 
 // ==========================================
-// 🚀 SMART GEO DRIVER ASSIGNMENT (AUTO)
+// 🚀 SIMPLE ASSIGN DRIVER
 // ==========================================
-export const autoAssignDriver = async (req, res) => {
+export const assignDriverSimple = asyncHandler(async (req, res) => {
+    const request = await EmergencyRequest.findById(req.params.id);
+
+    if (!request) {
+        res.status(404);
+        throw new Error("Request not found");
+    }
+
+    request.assignedDriver = req.body.driverId;
+    request.status = REQUEST_STATUS.DISPATCHED;
+
+    await request.save();
+
+    const io = req.app.get("io");
+    if (io) {
+        io.to(`driver:${req.body.driverId}`).emit("assign_driver", request);
+    }
+
+    res.status(200).json({
+        success: true,
+        message: "Driver assigned successfully",
+        data: request
+    });
+});
+
+
+// ==========================================
+// 🚀 AUTO ASSIGN DRIVER
+// ==========================================
+export const autoAssignDriver = asyncHandler(async (req, res) => {
     const session = await mongoose.startSession();
     session.startTransaction();
 
     try {
         const { id } = req.params;
 
-        // 1️⃣ Request
         const request = await EmergencyRequest.findById(id).session(session);
 
-        if (!request) throw new Error("Request not found");
+        if (!request) {
+            res.status(404);
+            throw new Error("Request not found");
+        }
 
         if (request.assignedDriver) {
+            res.status(400);
             throw new Error("Driver already assigned");
         }
 
         const coordinates = request.location.coordinates;
 
-        // 2️⃣ Find nearest driver
         const nearestDriver = await Driver.findOne({
             isAvailable: true,
             location: {
@@ -186,10 +216,10 @@ export const autoAssignDriver = async (req, res) => {
         }).session(session);
 
         if (!nearestDriver) {
+            res.status(404);
             throw new Error("No nearby drivers available");
         }
 
-        // 3️⃣ Assign
         request.assignedDriver = nearestDriver._id;
         request.status = REQUEST_STATUS.DISPATCHED;
 
@@ -201,7 +231,6 @@ export const autoAssignDriver = async (req, res) => {
             note: "Auto-assigned nearest driver",
         });
 
-        // 4️⃣ Driver OFF
         nearestDriver.isAvailable = false;
 
         await request.save({ session });
@@ -210,7 +239,6 @@ export const autoAssignDriver = async (req, res) => {
         await session.commitTransaction();
         session.endSession();
 
-        // 🔥 Socket
         const io = req.app.get("io");
 
         if (io) {
@@ -218,19 +246,18 @@ export const autoAssignDriver = async (req, res) => {
             io.to("admin").emit("auto_dispatch", request);
         }
 
-        res.json({
+        res.status(200).json({
             success: true,
-            message: "Nearest driver auto-assigned 🚑",
+            message: "Nearest driver auto-assigned",
             data: {
                 request,
                 driver: nearestDriver,
             },
         });
 
-    } catch (error) {
+    } catch (err) {
         await session.abortTransaction();
         session.endSession();
-
-        res.status(400).json({ success: false, message: error.message });
+        throw err; // 🔥 important
     }
-};
+});

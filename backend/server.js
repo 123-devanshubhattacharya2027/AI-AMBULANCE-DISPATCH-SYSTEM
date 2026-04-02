@@ -1,4 +1,3 @@
-
 import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
@@ -7,6 +6,19 @@ import helmet from "helmet";
 import morgan from "morgan";
 import { createServer } from "http";
 import { Server } from "socket.io";
+
+// ✅ Logger
+import { logger } from "./utils/logger.js";
+
+// ✅ Security
+import mongoSanitize from "express-mongo-sanitize";
+import xss from "xss-clean";
+
+// ✅ Rate Limiting
+import { apiLimiter, authLimiter } from "./middleware/rateLimiter.js";
+
+// ✅ Error Handler
+import { errorHandler } from "./middleware/errorMiddleware.js";
 
 // ✅ Routes
 import authRoutes from "./routes/authRoutes.js";
@@ -29,7 +41,7 @@ const httpServer = createServer(app);
 // ==============================
 const io = new Server(httpServer, {
     cors: {
-        origin: "*",
+        origin: "http://localhost:5173",
         methods: ["GET", "POST", "PATCH", "DELETE"],
     },
 });
@@ -40,35 +52,45 @@ app.set("io", io);
 // 🔌 SOCKET CONNECTION
 // ==============================
 io.on("connection", (socket) => {
-    console.log(`🔌 Socket connected: ${socket.id}`);
+    logger.info(`Socket connected: ${socket.id}`);
 
     socket.on("join_admin", () => {
         socket.join("admin");
-        console.log("👨‍⚕️ Admin joined admin room");
+        logger.info("Admin joined room");
     });
 
     socket.on("join_driver", (driverId) => {
         socket.join(`driver:${driverId}`);
-        console.log(`🚑 Driver ${driverId} joined room`);
+        logger.info(`Driver joined: ${driverId}`);
     });
 
     socket.on("join_user", (userId) => {
         socket.join(`user:${userId}`);
-        console.log(`👤 User ${userId} joined room`);
+        logger.info(`User joined: ${userId}`);
     });
 
     socket.on("disconnect", () => {
-        console.log(`❌ Socket disconnected: ${socket.id}`);
+        logger.info(`Socket disconnected: ${socket.id}`);
     });
 });
 
 // ==============================
-// 🧱 MIDDLEWARES (FIXED ORDER)
+// 🧱 MIDDLEWARES (ORDER MATTERS)
 // ==============================
-app.use(cors());
 
-app.use(express.json()); // ✅ MUST be before routes
+// 🌐 CORS
+app.use(cors({
+    origin: "http://localhost:5173",
+    credentials: true
+}));
+
+// 📦 Body Parser
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// 🔐 Security Layers
+app.use(mongoSanitize());
+app.use(xss());
 
 app.use(
     helmet({
@@ -76,7 +98,15 @@ app.use(
     })
 );
 
+// 📊 HTTP Logger
 app.use(morgan("dev"));
+
+// ==============================
+// 🚦 RATE LIMITING
+// ==============================
+
+app.use("/api/auth", authLimiter);
+app.use("/api", apiLimiter);
 
 // ==============================
 // ❤️ HEALTH CHECK
@@ -85,17 +115,19 @@ app.get("/api/health", (req, res) => {
     res.status(200).json({
         success: true,
         message: "Server is running 🚑",
+        uptime: process.uptime(),
+        timestamp: new Date(),
         socketConnections: io.engine.clientsCount,
     });
 });
 
 // ==============================
-// 🔌 MONGODB CONNECTION
+// 🔌 DATABASE CONNECTION
 // ==============================
 mongoose
     .connect(process.env.MONGO_URI || "mongodb://localhost:27017/ambulanceDB")
-    .then(() => console.log("MongoDB Connected ✅"))
-    .catch((err) => console.log("MongoDB Error ❌", err));
+    .then(() => logger.info("MongoDB Connected"))
+    .catch((err) => logger.error(`MongoDB Error: ${err.message}`));
 
 // ==============================
 // 🔐 PROTECTED TEST ROUTE
@@ -103,7 +135,7 @@ mongoose
 app.get("/api/protected", protect, (req, res) => {
     res.json({
         success: true,
-        message: "Protected route accessed successfully ✅",
+        message: "Protected route accessed successfully",
         user: req.user,
     });
 });
@@ -115,8 +147,6 @@ app.use("/api/auth", authRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/driver", driverRoutes);
 app.use("/api/requests", requestRoutes);
-
-console.log("📌 Routes mounted successfully");
 
 // ==============================
 // 🏠 ROOT ROUTE
@@ -138,14 +168,7 @@ app.use((req, res) => {
 // ==============================
 // 🔥 GLOBAL ERROR HANDLER
 // ==============================
-app.use((err, req, res, next) => {
-    console.error("🔥 Error:", err);
-
-    res.status(err.status || 500).json({
-        success: false,
-        message: err.message || "Internal Server Error",
-    });
-});
+app.use(errorHandler);
 
 // ==============================
 // 🚀 START SERVER
@@ -153,7 +176,6 @@ app.use((err, req, res, next) => {
 const PORT = process.env.PORT || 5000;
 
 httpServer.listen(PORT, () => {
-    console.log(`🚀 Server running on port ${PORT}`);
-    console.log(`🔌 Socket.IO ready on ws://localhost:${PORT}`);
+    logger.info(`Server running on port ${PORT}`);
+    logger.info(`Socket.IO ready`);
 });
-
