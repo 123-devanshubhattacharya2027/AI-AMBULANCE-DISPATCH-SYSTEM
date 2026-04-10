@@ -5,6 +5,7 @@ import { authorizeRoles } from "../middleware/authorizeRoles.js";
 import {
     createRequest,
     getMyRequests,
+    getAllRequests, // 🔥 NEW (STEP 2)
     updateRequestStatus,
     assignDriver
 } from "../controllers/requestController.js";
@@ -39,6 +40,14 @@ router.get(
 ====================================================
 */
 
+// 🔥 STEP 2 — GET ALL REQUESTS (Only ADMIN)
+router.get(
+    "/",
+    protect,
+    authorizeRoles("ADMIN"),
+    getAllRequests
+);
+
 // ✅ Assign Driver to Request (Only ADMIN)
 router.patch(
     "/:id/assign-driver",
@@ -54,7 +63,6 @@ router.patch(
 */
 
 // ✅ Update Request Status (USER / DRIVER / ADMIN)
-// Controller decides permission logic
 router.patch(
     "/:id/status",
     protect,

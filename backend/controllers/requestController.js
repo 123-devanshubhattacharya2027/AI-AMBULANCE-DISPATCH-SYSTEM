@@ -9,6 +9,14 @@ import asyncHandler from "express-async-handler";
 export const createRequest = asyncHandler(async (req, res) => {
     const { emergencyType, description, location } = req.body;
 
+    console.log("BODY:", req.body);
+    console.log("USER:", req.user);
+
+    if (!emergencyType || !description) {
+        res.status(400);
+        throw new Error("Emergency type and description are required");
+    }
+
     if (!location || !location.coordinates) {
         res.status(400);
         throw new Error("Location coordinates are required");
@@ -16,8 +24,13 @@ export const createRequest = asyncHandler(async (req, res) => {
 
     const [longitude, latitude] = location.coordinates;
 
+    if (!longitude || !latitude) {
+        res.status(400);
+        throw new Error("Invalid coordinates");
+    }
+
     const request = await EmergencyRequest.create({
-        user: req.user.id,
+        user: req.user._id,
         emergencyType,
         description,
         location: {
@@ -35,7 +48,9 @@ export const createRequest = asyncHandler(async (req, res) => {
     });
 
     const io = req.app.get("io");
-    io.to("admin").emit("new_request", request);
+    if (io) {
+        io.to("admin").emit("new_request", request);
+    }
 
     res.status(201).json({
         success: true,
@@ -46,11 +61,11 @@ export const createRequest = asyncHandler(async (req, res) => {
 
 
 // ==========================================
-// ✅ GET MY REQUESTS
+// ✅ GET MY REQUESTS (USER)
 // ==========================================
 export const getMyRequests = asyncHandler(async (req, res) => {
     const requests = await EmergencyRequest.find({
-        user: req.user.id,
+        user: req.user._id,
     }).sort({ createdAt: -1 });
 
     res.status(200).json({
@@ -58,7 +73,26 @@ export const getMyRequests = asyncHandler(async (req, res) => {
         message: "User requests fetched successfully",
         data: {
             count: requests.length,
-            requests
+            requests,
+        },
+    });
+});
+
+
+// ==========================================
+// 🔥 STEP 1 — GET ALL REQUESTS (ADMIN)
+// ==========================================
+export const getAllRequests = asyncHandler(async (req, res) => {
+    const requests = await EmergencyRequest.find()
+        .populate("user", "name email")
+        .sort({ createdAt: -1 });
+
+    res.status(200).json({
+        success: true,
+        message: "All requests fetched successfully",
+        data: {
+            count: requests.length,
+            requests,
         },
     });
 });
@@ -79,7 +113,6 @@ export const updateRequestStatus = asyncHandler(async (req, res) => {
     }
 
     const currentStatus = request.status;
-    const userRole = req.user.role;
 
     if (["COMPLETED", "CANCELLED"].includes(currentStatus)) {
         res.status(400);
@@ -88,43 +121,7 @@ export const updateRequestStatus = asyncHandler(async (req, res) => {
 
     if (!ALLOWED_TRANSITIONS[currentStatus]?.includes(status)) {
         res.status(400);
-        throw new Error(`Invalid status transition from ${currentStatus} to ${status}`);
-    }
-
-    // 🔐 Cancellation rules
-    if (status === "CANCELLED") {
-        if (currentStatus === "PENDING" && userRole !== "USER") {
-            res.status(403);
-            throw new Error("Only user can cancel a PENDING request");
-        }
-
-        if (currentStatus === "DISPATCHED" && userRole !== "ADMIN") {
-            res.status(403);
-            throw new Error("Only admin can cancel a DISPATCHED request");
-        }
-
-        if (!["PENDING", "DISPATCHED"].includes(currentStatus)) {
-            res.status(400);
-            throw new Error("Cannot cancel at this stage");
-        }
-    }
-
-    // 🚑 Driver rules
-    if (["ENROUTE", "ARRIVED", "PICKED_UP", "COMPLETED"].includes(status)) {
-        if (userRole !== "DRIVER") {
-            res.status(403);
-            throw new Error("Only assigned driver can update travel status");
-        }
-
-        if (!request.assignedDriver) {
-            res.status(403);
-            throw new Error("No driver assigned to this request");
-        }
-
-        if (request.assignedDriver.toString() !== req.user._id.toString()) {
-            res.status(403);
-            throw new Error("Driver not assigned to this request");
-        }
+        throw new Error(`Invalid transition from ${currentStatus} to ${status}`);
     }
 
     request.status = status;
@@ -138,8 +135,10 @@ export const updateRequestStatus = asyncHandler(async (req, res) => {
     await request.save();
 
     const io = req.app.get("io");
-    io.emit("status_update", request);
-    io.to(`user:${request.user}`).emit("status_update", request);
+    if (io) {
+        io.emit("status_update", request);
+        io.to(`user:${request.user}`).emit("status_update", request);
+    }
 
     res.status(200).json({
         success: true,
@@ -165,19 +164,14 @@ export const assignDriver = asyncHandler(async (req, res) => {
 
     const driver = await User.findById(driverId);
 
-    if (!driver) {
-        res.status(404);
-        throw new Error("Driver not found");
-    }
-
-    if (driver.role !== "DRIVER") {
+    if (!driver || driver.role !== "DRIVER") {
         res.status(400);
-        throw new Error("Assigned user is not a driver");
+        throw new Error("Invalid driver");
     }
 
     if (request.status !== "PENDING") {
         res.status(400);
-        throw new Error("Driver can only be assigned to PENDING requests");
+        throw new Error("Can only assign driver to PENDING request");
     }
 
     request.assignedDriver = driverId;
@@ -192,7 +186,9 @@ export const assignDriver = asyncHandler(async (req, res) => {
     await request.save();
 
     const io = req.app.get("io");
-    io.to(`driver:${driverId}`).emit("assign_driver", request);
+    if (io) {
+        io.to(`driver:${driverId}`).emit("assign_driver", request);
+    }
 
     res.status(200).json({
         success: true,

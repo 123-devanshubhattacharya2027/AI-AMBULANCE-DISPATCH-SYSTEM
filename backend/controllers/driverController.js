@@ -4,6 +4,36 @@ import EmergencyRequest from "../models/EmergencyRequest.js";
 import { REQUEST_STATUS } from "../constants/enums.js";
 
 // ==========================================
+// 🚑 CREATE DRIVER (Admin)
+// ==========================================
+export const createDriver = asyncHandler(async (req, res) => {
+    const { vehicleNumber, location } = req.body;
+
+    const existingDriver = await Driver.findOne({ user: req.user._id });
+
+    if (existingDriver) {
+        res.status(400);
+        throw new Error("Driver already exists");
+    }
+
+    const driver = await Driver.create({
+        user: req.user._id,
+        vehicleNumber,
+        location: {
+            type: "Point",
+            coordinates: location || [0, 0],
+        },
+        isAvailable: true,
+    });
+
+    res.status(201).json({
+        success: true,
+        message: "Driver created successfully",
+        data: driver,
+    });
+});
+
+// ==========================================
 // ✅ GET ASSIGNED REQUESTS (Driver)
 // ==========================================
 export const getAssignedRequests = asyncHandler(async (req, res) => {
@@ -132,5 +162,22 @@ export const toggleAvailability = asyncHandler(async (req, res) => {
         success: true,
         message: "Driver availability updated successfully",
         data: driver
+    });
+});
+
+// ==========================================
+// 👤 GET MY DRIVER PROFILE
+// ==========================================
+export const getMyDriverProfile = asyncHandler(async (req, res) => {
+    const driver = await Driver.findOne({ user: req.user._id });
+
+    if (!driver) {
+        res.status(404);
+        throw new Error("Driver not found");
+    }
+
+    res.status(200).json({
+        success: true,
+        data: driver,
     });
 });

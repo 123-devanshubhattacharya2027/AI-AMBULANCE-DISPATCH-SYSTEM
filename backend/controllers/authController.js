@@ -22,7 +22,7 @@ export const register = asyncHandler(async (req, res) => {
 
   const { name, email, password, role } = validatedData;
 
-  const existingUser = await User.findOne({ email });
+  const existingUser = await User.findOne({ email: email.toLowerCase() });
   if (existingUser) {
     res.status(400);
     throw new Error("User already exists");
@@ -32,7 +32,7 @@ export const register = asyncHandler(async (req, res) => {
 
   const user = await User.create({
     name,
-    email,
+    email: email.toLowerCase(),
     password: hashedPassword,
     role
   });
@@ -56,13 +56,21 @@ export const register = asyncHandler(async (req, res) => {
 export const login = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
-  const user = await User.findOne({ email });
+  console.log("🔐 Login Attempt");
+  console.log("Email:", email);
+  console.log("Password:", password);
+
+  const user = await User.findOne({ email: email.toLowerCase() });
+  console.log("User found:", user);
+
   if (!user) {
     res.status(400);
     throw new Error("Invalid credentials");
   }
 
   const isMatch = await bcrypt.compare(password, user.password);
+  console.log("Password match:", isMatch);
+
   if (!isMatch) {
     res.status(400);
     throw new Error("Invalid credentials");
@@ -77,14 +85,12 @@ export const login = asyncHandler(async (req, res) => {
   res.status(200).json({
     success: true,
     message: "Login successful",
-    data: {
-      token,
-      user: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-        role: user.role
-      }
+    token, // ✅ IMPORTANT (frontend expects this)
+    user: {
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role
     }
   });
 });

@@ -11,8 +11,8 @@ import { Server } from "socket.io";
 import { logger } from "./utils/logger.js";
 
 // ✅ Security
-import mongoSanitize from "express-mongo-sanitize";
-import xss from "xss-clean";
+// import mongoSanitize from "express-mongo-sanitize";
+// import xss from "xss-clean";
 
 // ✅ Rate Limiting
 import { apiLimiter, authLimiter } from "./middleware/rateLimiter.js";
@@ -89,8 +89,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // 🔐 Security Layers
-app.use(mongoSanitize());
-app.use(xss());
+// app.use(mongoSanitize());
+// app.use(xss());
 
 app.use(
     helmet({
@@ -106,7 +106,7 @@ app.use(morgan("dev"));
 // ==============================
 
 app.use("/api/auth", authLimiter);
-app.use("/api", apiLimiter);
+// app.use("/api", apiLimiter);
 
 // ==============================
 // ❤️ HEALTH CHECK
