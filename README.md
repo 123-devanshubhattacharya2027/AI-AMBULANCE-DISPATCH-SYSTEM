@@ -131,3 +131,23 @@ Content-Type: application/json
   "message": "...",
   "data": {}
 }
+
+## 🚀 Progress Update
+
+### ✅ Day 14 — Frontend Setup
+- Vite + React setup
+- Tailwind CSS integration
+- Axios setup
+- Project folder structure
+
+### ✅ Day 15 — Authentication UI
+- Login page
+- Register page
+- JWT token storage
+- Role-based protected routing
+
+### ✅ Day 16 — User Dashboard
+- Emergency request form UI
+- API integration (/api/requests)
+- Location input (manual + auto)
+- Request creation working
