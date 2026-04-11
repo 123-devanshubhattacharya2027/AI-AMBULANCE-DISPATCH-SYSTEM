@@ -151,3 +151,24 @@ Content-Type: application/json
 - API integration (/api/requests)
 - Location input (manual + auto)
 - Request creation working
+
+### 🚑 Features Added
+
+- 📍 Auto-detect user location using Geolocation API
+- 🏠 Reverse geocoding (address from coordinates)
+- 🗺️ Live map integration (Leaflet / OpenStreetMap)
+- 🚑 Ambulance movement simulation
+- 📍 Route tracking with polyline
+- 🔌 Real-time tracking using Socket.IO (backend + frontend ready)
+
+### 🧠 System Upgrade
+
+- User can see live ambulance movement
+- Driver location can be streamed in real-time
+- Backend supports location broadcasting
+
+### 🚀 Next Plan
+
+- Real driver GPS tracking
+- AI-based nearest driver assignment
+- Route optimization
