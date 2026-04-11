@@ -9,6 +9,7 @@ const emergencyRequestSchema = new mongoose.Schema(
       required: true,
     },
 
+    // 🔥 DRIVER REFERENCE (CORRECT)
     assignedDriver: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Driver",
@@ -76,17 +77,28 @@ const emergencyRequestSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-
-    // ✅ STEP 6 OPTIMIZATION (IMPORTANT)
     toJSON: { versionKey: false },
     toObject: { versionKey: false },
   }
 );
 
-// 🌍 GEO INDEX (for Day 18 - AI)
+// 🌍 GEO INDEX (for AI dispatch later)
 emergencyRequestSchema.index({ location: "2dsphere" });
 
-// ⚡ DAY 9 OPTIMIZED INDEX (IMPORTANT)
+// ⚡ OPTIMIZATION INDEX
 emergencyRequestSchema.index({ status: 1, createdAt: -1 });
+
+// 🔥 OPTIONAL: AUTO POPULATE (VERY USEFUL)
+emergencyRequestSchema.pre(/^find/, function () {
+  this.populate("user", "name email");
+
+  this.populate({
+    path: "assignedDriver",
+    populate: {
+      path: "user",
+      select: "name email",
+    },
+  });
+});
 
 export default mongoose.model("EmergencyRequest", emergencyRequestSchema);

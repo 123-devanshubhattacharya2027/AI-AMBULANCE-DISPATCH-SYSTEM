@@ -1,3 +1,4 @@
+import registerBg from "../../assets/register-bg.jpg";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../../api/axios";
@@ -14,85 +15,106 @@ const Register = () => {
 
     const handleRegister = async () => {
         try {
-            const res = await API.post("/auth/register", form);
-
-            console.log("Register Response:", res.data);
-
-            alert("Registration Successful ✅");
-
-            // redirect to login
+            await API.post("/auth/register", form);
+            alert("Registered Successfully ✅");
             navigate("/login");
         } catch (err) {
-            console.error(err.response?.data || err.message);
-            alert(err.response?.data?.message || "Registration Failed ❌");
+            alert("Registration Failed ❌");
         }
     };
 
     return (
-        <div className="flex items-center justify-center h-screen">
-            <div className="bg-white p-6 rounded shadow w-80">
-                <h2 className="text-xl font-bold mb-4 text-center">Register</h2>
+        <div className="min-h-screen relative flex items-center justify-center overflow-hidden">
 
-                {/* Name */}
-                <input
-                    type="text"
-                    placeholder="Name"
-                    className="w-full mb-2 p-2 border rounded"
-                    onChange={(e) =>
-                        setForm({ ...form, name: e.target.value })
-                    }
-                />
+            {/* 🔥 BACKGROUND IMAGE */}
+            <img
+                src={registerBg}
+                alt="bg"
+                className="absolute inset-0 w-full h-full object-cover"
+            />
 
-                {/* Email */}
-                <input
-                    type="email"
-                    placeholder="Email"
-                    className="w-full mb-2 p-2 border rounded"
-                    onChange={(e) =>
-                        setForm({ ...form, email: e.target.value })
-                    }
-                />
+            {/* 🔥 OVERLAY */}
+            <div className="absolute inset-0 bg-black/50"></div>
 
-                {/* Password */}
-                <input
-                    type="password"
-                    placeholder="Password"
-                    className="w-full mb-2 p-2 border rounded"
-                    onChange={(e) =>
-                        setForm({ ...form, password: e.target.value })
-                    }
-                />
+            {/* 🔥 CONTENT */}
+            <div className="relative z-10 flex flex-col items-center">
 
-                {/* Role */}
-                <select
-                    className="w-full mb-3 p-2 border rounded"
-                    onChange={(e) =>
-                        setForm({ ...form, role: e.target.value })
-                    }
-                >
-                    <option value="USER">User</option>
-                    <option value="DRIVER">Driver</option>
-                    <option value="ADMIN">Admin</option>
-                </select>
+                {/* Branding */}
+                <div className="text-white text-center mb-6">
+                    <h1 className="text-4xl font-bold">LifeLine 🚑</h1>
+                    <p className="mt-2 text-lg">Emergency Care Network</p>
+                    <p className="text-sm opacity-80">
+                        Always There in Time
+                    </p>
+                </div>
 
-                {/* Register Button */}
-                <button
-                    onClick={handleRegister}
-                    className="w-full bg-green-500 text-white p-2 rounded hover:bg-green-600"
-                >
-                    Register
-                </button>
+                {/* Register Card */}
+                <div className="bg-white p-8 rounded-xl shadow-xl w-80">
 
-                {/* 🔥 Step 3 — Navigation to Login */}
-                <p className="mt-3 text-sm text-center">
-                    Already have an account?{" "}
-                    <span
-                        className="text-blue-500 cursor-pointer font-medium"
-                        onClick={() => navigate("/login")}
+                    <h2 className="text-2xl font-bold mb-6 text-center">
+                        Register
+                    </h2>
+
+                    {/* Name */}
+                    <input
+                        placeholder="Name"
+                        className="w-full mb-2 p-2 border rounded"
+                        onChange={(e) =>
+                            setForm({ ...form, name: e.target.value })
+                        }
+                    />
+
+                    {/* Email */}
+                    <input
+                        placeholder="Email"
+                        className="w-full mb-2 p-2 border rounded"
+                        onChange={(e) =>
+                            setForm({ ...form, email: e.target.value })
+                        }
+                    />
+
+                    {/* Password */}
+                    <input
+                        type="password"
+                        placeholder="Password"
+                        className="w-full mb-2 p-2 border rounded"
+                        onChange={(e) =>
+                            setForm({ ...form, password: e.target.value })
+                        }
+                    />
+
+                    {/* Role */}
+                    <select
+                        className="w-full mb-3 p-2 border rounded"
+                        onChange={(e) =>
+                            setForm({ ...form, role: e.target.value })
+                        }
                     >
-                        Login
-                    </span>
-                </p>
+                        <option value="USER">User</option>
+                        <option value="DRIVER">Driver</option>
+                        <option value="ADMIN">Admin</option>
+                    </select>
+
+                    {/* Button */}
+                    <button
+                        onClick={handleRegister}
+                        className="w-full bg-green-500 text-white p-2 rounded hover:bg-green-600"
+                    >
+                        Register
+                    </button>
+
+                    {/* Redirect */}
+                    <p className="text-center mt-3 text-sm">
+                        Already have an account?{" "}
+                        <span
+                            className="text-blue-500 cursor-pointer"
+                            onClick={() => navigate("/login")}
+                        >
+                            Login
+                        </span>
+                    </p>
+
+                </div>
             </div>
         </div>
     );

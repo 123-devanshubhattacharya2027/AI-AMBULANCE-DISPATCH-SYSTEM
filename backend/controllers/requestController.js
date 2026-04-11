@@ -1,6 +1,7 @@
 import EmergencyRequest from "../models/EmergencyRequest.js";
 import { ALLOWED_TRANSITIONS } from "../constants/statusTransitions.js";
 import User from "../models/User.js";
+import Driver from "../models/Driver.js"; // 🔥 IMPORTANT FIX
 import asyncHandler from "express-async-handler";
 
 // ==========================================
@@ -8,9 +9,6 @@ import asyncHandler from "express-async-handler";
 // ==========================================
 export const createRequest = asyncHandler(async (req, res) => {
     const { emergencyType, description, location } = req.body;
-
-    console.log("BODY:", req.body);
-    console.log("USER:", req.user);
 
     if (!emergencyType || !description) {
         res.status(400);
@@ -59,7 +57,6 @@ export const createRequest = asyncHandler(async (req, res) => {
     });
 });
 
-
 // ==========================================
 // ✅ GET MY REQUESTS (USER)
 // ==========================================
@@ -78,9 +75,8 @@ export const getMyRequests = asyncHandler(async (req, res) => {
     });
 });
 
-
 // ==========================================
-// 🔥 STEP 1 — GET ALL REQUESTS (ADMIN)
+// 🔥 GET ALL REQUESTS (ADMIN)
 // ==========================================
 export const getAllRequests = asyncHandler(async (req, res) => {
     const requests = await EmergencyRequest.find()
@@ -96,7 +92,6 @@ export const getAllRequests = asyncHandler(async (req, res) => {
         },
     });
 });
-
 
 // ==========================================
 // ✅ UPDATE REQUEST STATUS
@@ -147,13 +142,17 @@ export const updateRequestStatus = asyncHandler(async (req, res) => {
     });
 });
 
-
 // ==========================================
-// ✅ ASSIGN DRIVER (ADMIN)
+// ✅ ASSIGN DRIVER (ADMIN) 🔥 FIXED
 // ==========================================
 export const assignDriver = asyncHandler(async (req, res) => {
     const { id } = req.params;
     const { driverId } = req.body;
+
+    if (!driverId) {
+        res.status(400);
+        throw new Error("Driver ID is required");
+    }
 
     const request = await EmergencyRequest.findById(id);
 
@@ -162,11 +161,17 @@ export const assignDriver = asyncHandler(async (req, res) => {
         throw new Error("Request not found");
     }
 
-    const driver = await User.findById(driverId);
+    // 🔥 FIX: use Driver model
+    const driver = await Driver.findById(driverId).populate("user");
 
-    if (!driver || driver.role !== "DRIVER") {
+    if (!driver) {
         res.status(400);
         throw new Error("Invalid driver");
+    }
+
+    if (!driver.isAvailable) {
+        res.status(400);
+        throw new Error("Driver not available");
     }
 
     if (request.status !== "PENDING") {
@@ -174,6 +179,7 @@ export const assignDriver = asyncHandler(async (req, res) => {
         throw new Error("Can only assign driver to PENDING request");
     }
 
+    // ✅ Assign
     request.assignedDriver = driverId;
     request.status = "DISPATCHED";
 
@@ -185,14 +191,19 @@ export const assignDriver = asyncHandler(async (req, res) => {
 
     await request.save();
 
+    // 🔥 mark driver busy
+    driver.isAvailable = false;
+    await driver.save();
+
+    // 🔥 socket
     const io = req.app.get("io");
     if (io) {
-        io.to(`driver:${driverId}`).emit("assign_driver", request);
+        io.to(`driver:${driver._id}`).emit("assign_driver", request);
     }
 
     res.status(200).json({
         success: true,
-        message: "Driver assigned successfully",
+        message: "Driver assigned successfully 🚑",
         data: request,
     });
 });

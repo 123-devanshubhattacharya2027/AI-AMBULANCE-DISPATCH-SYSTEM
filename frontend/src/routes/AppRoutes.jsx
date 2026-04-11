@@ -3,9 +3,8 @@ import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
 import ProtectedRoute from "./ProtectedRoute";
 import UserDashboard from "../pages/user/UserDashboard";
-import AdminDashboard from "../pages/admin/AdminDashboard"; // 🔥 NEW
-
-const Dummy = ({ text }) => <h1>{text}</h1>;
+import AdminDashboard from "../pages/admin/AdminDashboard";
+import DriverDashboard from "../pages/driver/DriverDashboard"; // 🔥 ADD THIS
 
 const AppRoutes = () => {
     return (
@@ -17,9 +16,11 @@ const AppRoutes = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
 
-            {/* Protected Routes */}
+            {/* ========================= */}
+            {/* 🔒 PROTECTED ROUTES */}
+            {/* ========================= */}
 
-            {/* ADMIN (UPDATED 🔥) */}
+            {/* ADMIN */}
             <Route
                 path="/admin"
                 element={
@@ -29,12 +30,12 @@ const AppRoutes = () => {
                 }
             />
 
-            {/* DRIVER */}
+            {/* DRIVER ✅ FIXED */}
             <Route
                 path="/driver"
                 element={
                     <ProtectedRoute allowedRoles={["DRIVER"]}>
-                        <Dummy text="Driver Dashboard" />
+                        <DriverDashboard />   {/* 🔥 REAL COMPONENT */}
                     </ProtectedRoute>
                 }
             />

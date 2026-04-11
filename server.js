@@ -45,6 +45,7 @@ app.set("io", io);
 io.on("connection", (socket) => {
     logger.info(`Socket connected: ${socket.id}`);
 
+    // 🔥 ROOMS
     socket.on("join_admin", () => {
         socket.join("admin");
         logger.info("Admin joined room");
@@ -60,6 +61,14 @@ io.on("connection", (socket) => {
         logger.info(`User joined: ${userId}`);
     });
 
+    // 🚑 STEP 6 — DRIVER LOCATION UPDATE (IMPORTANT)
+    socket.on("driver_location", (data) => {
+        logger.info(`📍 Driver location: ${JSON.stringify(data)}`);
+
+        // Broadcast to all users (or specific user in future)
+        io.emit("location_update", data);
+    });
+
     socket.on("disconnect", () => {
         logger.info(`Socket disconnected: ${socket.id}`);
     });
@@ -69,7 +78,6 @@ io.on("connection", (socket) => {
 // 🧱 MIDDLEWARES
 // ==============================
 
-// ✅ CORS (FIXED - Step 1)
 app.use(cors({
     origin: process.env.CLIENT_URL,
     credentials: true
@@ -153,5 +161,5 @@ const PORT = process.env.PORT || 5000;
 
 httpServer.listen(PORT, () => {
     logger.info(`Server running on port ${PORT}`);
-    logger.info("Socket.IO ready");
+    logger.info("Socket.IO ready 🚑");
 });

@@ -8,17 +8,35 @@ import {
     getMyDriverProfile,
     updateDriverLocation,
     toggleAvailability,
-    getAssignedRequests
+    getAssignedRequests,
+    getDrivers // 🔥 ADD THIS
 } from "../controllers/driverController.js";
 
 const router = express.Router();
 
-// ADMIN
+/*
+========================================
+🚑 ADMIN ROUTES
+========================================
+*/
+
+// ✅ CREATE DRIVER
 router.post("/", protect, authorizeRoles("ADMIN"), createDriver);
 
-// DRIVER
+// ✅ GET ALL DRIVERS (🔥 STEP 1 FIX)
+router.get("/", protect, authorizeRoles("ADMIN"), getDrivers);
+
+
+/*
+========================================
+🚑 DRIVER ROUTES
+========================================
+*/
+
+// ✅ DRIVER PROFILE
 router.get("/me", protect, authorizeRoles("DRIVER"), getMyDriverProfile);
 
+// ✅ UPDATE LOCATION
 router.patch(
     "/me/location",
     protect,
@@ -27,8 +45,20 @@ router.patch(
     updateDriverLocation
 );
 
-router.patch("/me/availability", protect, authorizeRoles("DRIVER"), toggleAvailability);
+// ✅ TOGGLE AVAILABILITY
+router.patch(
+    "/me/availability",
+    protect,
+    authorizeRoles("DRIVER"),
+    toggleAvailability
+);
 
-router.get("/me/requests", protect, authorizeRoles("DRIVER"), getAssignedRequests);
+// ✅ GET ASSIGNED REQUESTS
+router.get(
+    "/me/requests",
+    protect,
+    authorizeRoles("DRIVER"),
+    getAssignedRequests
+);
 
 export default router;

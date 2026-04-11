@@ -10,10 +10,6 @@ import { Server } from "socket.io";
 // ✅ Logger
 import { logger } from "./utils/logger.js";
 
-// ✅ Security
-// import mongoSanitize from "express-mongo-sanitize";
-// import xss from "xss-clean";
-
 // ✅ Rate Limiting
 import { apiLimiter, authLimiter } from "./middleware/rateLimiter.js";
 
@@ -56,17 +52,14 @@ io.on("connection", (socket) => {
 
     socket.on("join_admin", () => {
         socket.join("admin");
-        logger.info("Admin joined room");
     });
 
     socket.on("join_driver", (driverId) => {
         socket.join(`driver:${driverId}`);
-        logger.info(`Driver joined: ${driverId}`);
     });
 
     socket.on("join_user", (userId) => {
         socket.join(`user:${userId}`);
-        logger.info(`User joined: ${userId}`);
     });
 
     socket.on("disconnect", () => {
@@ -75,22 +68,15 @@ io.on("connection", (socket) => {
 });
 
 // ==============================
-// 🧱 MIDDLEWARES (ORDER MATTERS)
+// 🧱 MIDDLEWARES
 // ==============================
-
-// 🌐 CORS
 app.use(cors({
     origin: "http://localhost:5173",
     credentials: true
 }));
 
-// 📦 Body Parser
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-// 🔐 Security Layers
-// app.use(mongoSanitize());
-// app.use(xss());
 
 app.use(
     helmet({
@@ -98,15 +84,12 @@ app.use(
     })
 );
 
-// 📊 HTTP Logger
 app.use(morgan("dev"));
 
 // ==============================
 // 🚦 RATE LIMITING
 // ==============================
-
 app.use("/api/auth", authLimiter);
-// app.use("/api", apiLimiter);
 
 // ==============================
 // ❤️ HEALTH CHECK
@@ -115,14 +98,11 @@ app.get("/api/health", (req, res) => {
     res.status(200).json({
         success: true,
         message: "Server is running 🚑",
-        uptime: process.uptime(),
-        timestamp: new Date(),
-        socketConnections: io.engine.clientsCount,
     });
 });
 
 // ==============================
-// 🔌 DATABASE CONNECTION
+// 🔌 DATABASE
 // ==============================
 mongoose
     .connect(process.env.MONGO_URI || "mongodb://localhost:27017/ambulanceDB")
@@ -135,7 +115,6 @@ mongoose
 app.get("/api/protected", protect, (req, res) => {
     res.json({
         success: true,
-        message: "Protected route accessed successfully",
         user: req.user,
     });
 });
@@ -145,18 +124,21 @@ app.get("/api/protected", protect, (req, res) => {
 // ==============================
 app.use("/api/auth", authRoutes);
 app.use("/api/admin", adminRoutes);
-app.use("/api/driver", driverRoutes);
+
+// 🔥 FIXED HERE
+app.use("/api/drivers", driverRoutes);
+
 app.use("/api/requests", requestRoutes);
 
 // ==============================
-// 🏠 ROOT ROUTE
+// 🏠 ROOT
 // ==============================
 app.get("/", (req, res) => {
-    res.send("AI Ambulance Backend Running 🚑");
+    res.send("Ambulance Backend Running 🚑");
 });
 
 // ==============================
-// ❌ 404 HANDLER
+// ❌ 404
 // ==============================
 app.use((req, res) => {
     res.status(404).json({
@@ -166,7 +148,7 @@ app.use((req, res) => {
 });
 
 // ==============================
-// 🔥 GLOBAL ERROR HANDLER
+// 🔥 ERROR HANDLER
 // ==============================
 app.use(errorHandler);
 
@@ -177,5 +159,4 @@ const PORT = process.env.PORT || 5000;
 
 httpServer.listen(PORT, () => {
     logger.info(`Server running on port ${PORT}`);
-    logger.info(`Socket.IO ready`);
 });

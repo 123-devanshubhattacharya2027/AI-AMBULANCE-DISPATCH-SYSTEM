@@ -4,12 +4,17 @@ import EmergencyRequest from "../models/EmergencyRequest.js";
 import { REQUEST_STATUS } from "../constants/enums.js";
 
 // ==========================================
-// 🚑 CREATE DRIVER (Admin)
+// 🚑 CREATE DRIVER (Admin) ✅ FIXED
 // ==========================================
 export const createDriver = asyncHandler(async (req, res) => {
-    const { vehicleNumber, location } = req.body;
+    const { userId, vehicleNumber, location } = req.body;
 
-    const existingDriver = await Driver.findOne({ user: req.user._id });
+    if (!userId) {
+        res.status(400);
+        throw new Error("userId is required");
+    }
+
+    const existingDriver = await Driver.findOne({ user: userId });
 
     if (existingDriver) {
         res.status(400);
@@ -17,7 +22,7 @@ export const createDriver = asyncHandler(async (req, res) => {
     }
 
     const driver = await Driver.create({
-        user: req.user._id,
+        user: userId,
         vehicleNumber,
         location: {
             type: "Point",
@@ -34,13 +39,35 @@ export const createDriver = asyncHandler(async (req, res) => {
 });
 
 // ==========================================
-// ✅ GET ASSIGNED REQUESTS (Driver)
+// 🚑 GET ALL DRIVERS (Admin)
+// ==========================================
+export const getDrivers = asyncHandler(async (req, res) => {
+    const drivers = await Driver.find()
+        .populate("user", "name email")
+        .sort({ createdAt: -1 });
+
+    res.status(200).json({
+        success: true,
+        message: "Drivers fetched successfully",
+        data: { drivers },
+    });
+});
+
+// ==========================================
+// ✅ GET ASSIGNED REQUESTS (Driver) 🔥 FIXED
 // ==========================================
 export const getAssignedRequests = asyncHandler(async (req, res) => {
-    const driverId = req.user._id;
+    // 🔥 FIND DRIVER USING USER ID
+    const driver = await Driver.findOne({ user: req.user._id });
 
+    if (!driver) {
+        res.status(404);
+        throw new Error("Driver not found");
+    }
+
+    // 🔥 MATCH WITH DRIVER._id (NOT USER ID)
     const requests = await EmergencyRequest.find({
-        assignedDriver: driverId
+        assignedDriver: driver._id
     })
         .populate("user", "name email phone")
         .sort({ createdAt: -1 });
@@ -52,13 +79,19 @@ export const getAssignedRequests = asyncHandler(async (req, res) => {
     });
 });
 
-
 // ==========================================
 // 🚑 UPDATE REQUEST STATUS (Driver)
 // ==========================================
 export const updateRequestStatus = asyncHandler(async (req, res) => {
     const { id } = req.params;
     const { status } = req.body;
+
+    const driver = await Driver.findOne({ user: req.user._id });
+
+    if (!driver) {
+        res.status(404);
+        throw new Error("Driver not found");
+    }
 
     const request = await EmergencyRequest.findById(id);
 
@@ -67,10 +100,10 @@ export const updateRequestStatus = asyncHandler(async (req, res) => {
         throw new Error("Request not found");
     }
 
-    // 🔐 Ensure driver is assigned
+    // 🔥 FIX: CHECK USING DRIVER._id
     if (
         !request.assignedDriver ||
-        request.assignedDriver.toString() !== req.user._id.toString()
+        request.assignedDriver.toString() !== driver._id.toString()
     ) {
         res.status(403);
         throw new Error("Not authorized for this request");
@@ -86,7 +119,6 @@ export const updateRequestStatus = asyncHandler(async (req, res) => {
 
     await request.save();
 
-    // 🔥 Emit updates
     const io = req.app.get("io");
     if (io) {
         io.emit("status_update", request);
@@ -99,7 +131,6 @@ export const updateRequestStatus = asyncHandler(async (req, res) => {
         data: request
     });
 });
-
 
 // ==========================================
 // 📍 UPDATE DRIVER LOCATION
@@ -126,7 +157,6 @@ export const updateDriverLocation = asyncHandler(async (req, res) => {
 
     await driver.save();
 
-    // 🔥 Emit live location
     const io = req.app.get("io");
     if (io) {
         io.to("admin").emit("location_update", {
@@ -141,7 +171,6 @@ export const updateDriverLocation = asyncHandler(async (req, res) => {
         data: driver
     });
 });
-
 
 // ==========================================
 // 🟢 TOGGLE DRIVER AVAILABILITY
