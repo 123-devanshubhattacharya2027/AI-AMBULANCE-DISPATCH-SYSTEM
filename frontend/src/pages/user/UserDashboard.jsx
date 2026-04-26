@@ -1,203 +1,256 @@
-import { useState, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import API from "../../api/axios";
 import { Ambulance, MapPin } from "lucide-react";
-
-// 🔥 MAP IMPORTS
-import { MapContainer, TileLayer, Marker, Popup, Polyline } from "react-leaflet";
-import L from "leaflet";
-
-// 🔥 SOCKET (for real-time later)
+import Select from "react-select";
+import LocationPicker from "../../components/LocationPicker";
 import { io } from "socket.io-client";
 
-const ambulanceIcon = new L.Icon({
-    iconUrl: "https://cdn-icons-png.flaticon.com/512/2967/2967350.png",
-    iconSize: [40, 40],
-});
-
 const UserDashboard = () => {
+
+    const emergencyGroups = [
+        {
+            label: "🩺 Medical",
+            options: ["Heart Attack", "Stroke", "Seizure"]
+                .map(v => ({ label: v, value: v })),
+        },
+        {
+            label: "🩹 Trauma",
+            options: ["Fracture", "Head Injury"]
+                .map(v => ({ label: v, value: v })),
+        },
+        {
+            label: "🚗 Accidents",
+            options: ["Traffic Accident", "Fall from Height"]
+                .map(v => ({ label: v, value: v })),
+        },
+    ];
+
+    const formatEmergency = (text) =>
+        text.toLowerCase().split(" ").map(w => w[0].toUpperCase() + w.slice(1)).join(" ");
+
     const [form, setForm] = useState({
         emergencyType: "",
         description: "",
-        latitude: "",
-        longitude: "",
+        latitude: null,
+        longitude: null,
+        eta: null,
+        driverId: null,
+        requestId: null,
     });
 
-    const [loadingLocation, setLoadingLocation] = useState(false);
+    const [search, setSearch] = useState("");
+    const [suggestions, setSuggestions] = useState([]);
     const [locationStatus, setLocationStatus] = useState("");
-    const [address, setAddress] = useState("");
+    const [showMap, setShowMap] = useState(false);
+    const [trackingActive, setTrackingActive] = useState(false);
 
-    // 🚑 STEP 1: DRIVER STATE
-    const [driverPosition, setDriverPosition] = useState([28.61, 77.20]);
-    const [route, setRoute] = useState([]);
+    const boxRef = useRef();
 
-    // 🚑 CREATE REQUEST
-    const handleSubmit = async () => {
-        try {
-            await API.post("/requests", {
-                emergencyType: form.emergencyType,
-                description: form.description,
-                location: {
-                    type: "Point",
-                    coordinates: [form.longitude, form.latitude],
-                },
-            });
-
-            alert("🚑 Request Created Successfully");
-        } catch {
-            alert("❌ Error creating request");
-        }
-    };
-
-    // 📍 GET LOCATION + ADDRESS
-    const handleGetLocation = async () => {
-        if (!navigator.geolocation) {
-            setLocationStatus("❌ Geolocation not supported");
-            return;
-        }
-
-        setLoadingLocation(true);
-        setLocationStatus("📍 Fetching location...");
-
-        navigator.geolocation.getCurrentPosition(
-            async (position) => {
-                const lat = position.coords.latitude;
-                const lng = position.coords.longitude;
-
-                setForm((prev) => ({
-                    ...prev,
-                    latitude: lat,
-                    longitude: lng,
-                }));
-
-                try {
-                    const res = await fetch(
-                        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
-                    );
-                    const data = await res.json();
-                    setAddress(data.display_name);
-                } catch {
-                    setAddress("Address not found");
-                }
-
-                setLoadingLocation(false);
-                setLocationStatus("✅ Location fetched");
-            },
-            () => {
-                setLoadingLocation(false);
-                setLocationStatus("❌ Permission denied");
-            }
-        );
-    };
-
-    // 🚑 STEP 2 — SIMULATED MOVEMENT
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setDriverPosition((prev) => {
-                const newPos = [prev[0] + 0.0005, prev[1] + 0.0005];
-                setRoute((r) => [...r, newPos]);
-                return newPos;
-            });
-        }, 2000);
-
-        return () => clearInterval(interval);
-    }, []);
-
-    // 🚑 STEP 7 — SOCKET READY (REAL TIME)
+    // ==============================
+    // 🔌 SOCKET
+    // ==============================
     useEffect(() => {
         const socket = io("http://localhost:5000");
 
-        socket.on("location_update", (data) => {
-            setDriverPosition(data.coordinates);
-            setRoute((prev) => [...prev, data.coordinates]);
+        const user = JSON.parse(localStorage.getItem("user"));
+        if (user) socket.emit("join_user", user._id);
+
+        socket.on("driver_assigned", (data) => {
+            setLocationStatus("🚑 Ambulance assigned! Tracking started...");
+            setTrackingActive(true);
+            setShowMap(true);
+
+            setForm((prev) => ({
+                ...prev,
+                eta: data.eta,
+                driverId: data.driverId,
+                requestId: data.requestId,
+            }));
         });
 
         return () => socket.disconnect();
     }, []);
 
+    // ==============================
+    // 🔍 SEARCH
+    // ==============================
+    const handleSearch = async (value) => {
+        setSearch(value);
+
+        if (!value || value.length < 3) {
+            setSuggestions([]);
+            return;
+        }
+
+        const res = await fetch(
+            `https://nominatim.openstreetmap.org/search?format=json&q=${value}`
+        );
+        const data = await res.json();
+        setSuggestions(data);
+    };
+
+    const handleSelectLocation = (place) => {
+        setForm(prev => ({
+            ...prev,
+            latitude: parseFloat(place.lat),
+            longitude: parseFloat(place.lon),
+        }));
+
+        setSearch(place.display_name);
+        setSuggestions([]);
+        setLocationStatus("✅ Location selected");
+    };
+
+    // ==============================
+    // 🚑 SUBMIT
+    // ==============================
+    const handleSubmit = async () => {
+        if (!form.latitude || !form.longitude) {
+            alert("📍 Please select location");
+            return;
+        }
+
+        if (!form.emergencyType) {
+            alert("⚠️ Select emergency type");
+            return;
+        }
+
+        const res = await API.post("/requests", {
+            emergencyType: formatEmergency(form.emergencyType),
+            description: form.description,
+            location: {
+                type: "Point",
+                coordinates: [form.longitude, form.latitude],
+            },
+        });
+
+        setForm(prev => ({
+            ...prev,
+            requestId: res.data.data._id,
+        }));
+
+        alert("🚑 Request Created Successfully");
+    };
+
+    // ==============================
+    // ❌ CANCEL
+    // ==============================
+    const handleCancel = async () => {
+        if (!form.requestId) return;
+
+        await API.patch(`/requests/${form.requestId}/cancel`);
+
+        setTrackingActive(false);
+
+        setForm(prev => ({
+            ...prev,
+            eta: null,
+            driverId: null,
+            requestId: null,
+        }));
+    };
+
     return (
-        <div className="min-h-screen relative flex items-center justify-center overflow-hidden">
+        <div className="min-h-screen flex items-center justify-center relative">
 
-            {/* BACKGROUND */}
-            <img
-                src="/ambulance-bg.jpg"
-                className="absolute inset-0 w-full h-full object-cover brightness-110"
-                alt="bg"
-            />
+            <img src="/ambulance-bg.jpg" className="fixed inset-0 w-full h-full object-cover -z-10" />
 
-            <div className="absolute inset-0 bg-black/50"></div>
+            <div className="fixed inset-0 bg-black/60 -z-10"></div>
 
-            <div className="relative z-10 bg-black/60 backdrop-blur-xl p-6 rounded-3xl w-[420px] text-white">
+            <div className="bg-black/50 p-6 rounded-3xl w-[420px] text-white">
 
-                <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
+                <h2 className="text-2xl font-bold mb-4 flex gap-2">
                     <Ambulance /> Emergency Request
                 </h2>
 
-                {/* FORM */}
-                <input
-                    placeholder="Emergency Type"
-                    className="w-full mb-2 p-2 rounded bg-white/10"
-                    onChange={(e) =>
-                        setForm({ ...form, emergencyType: e.target.value })
+                {/* 🔥 DARK DROPDOWN */}
+                <Select
+                    options={emergencyGroups}
+                    placeholder="Select emergency"
+                    className="mt-2"
+                    onChange={(s) =>
+                        setForm({ ...form, emergencyType: s.value })
                     }
+                    styles={{
+                        control: (base) => ({
+                            ...base,
+                            backgroundColor: "#1f2937",
+                            borderColor: "#374151",
+                            color: "white",
+                        }),
+                        menu: (base) => ({
+                            ...base,
+                            backgroundColor: "#1f2937",
+                            color: "white",
+                        }),
+                        option: (base, state) => ({
+                            ...base,
+                            backgroundColor: state.isFocused ? "#374151" : "#1f2937",
+                            color: "white",
+                        }),
+                        singleValue: (base) => ({
+                            ...base,
+                            color: "white",
+                        }),
+                        input: (base) => ({
+                            ...base,
+                            color: "white",
+                        }),
+                        placeholder: (base) => ({
+                            ...base,
+                            color: "#9ca3af",
+                        }),
+                    }}
                 />
 
+                {/* ✅ SHOW SELECTED */}
+                {form.emergencyType && (
+                    <p className="mt-2 text-green-400 text-sm">
+                        Selected: {form.emergencyType}
+                    </p>
+                )}
+
                 <textarea
-                    placeholder="Describe situation..."
-                    className="w-full mb-2 p-2 rounded bg-white/10"
+                    className="w-full mt-3 p-2 bg-white/10 rounded"
+                    placeholder="Describe..."
                     onChange={(e) =>
                         setForm({ ...form, description: e.target.value })
                     }
                 />
 
-                {/* LOCATION BUTTON */}
-                <button
-                    onClick={handleGetLocation}
-                    className="w-full bg-blue-500 p-2 rounded mb-2"
-                >
-                    <MapPin size={16} /> Use My Location
+                <div ref={boxRef} className="relative mt-3">
+                    <input
+                        className="w-full p-2 bg-white/10 rounded"
+                        placeholder="Search location..."
+                        value={search}
+                        onChange={(e) => handleSearch(e.target.value)}
+                    />
+
+                    {suggestions.length > 0 && (
+                        <div className="absolute bg-white text-black w-full max-h-40 overflow-y-auto rounded shadow z-50">
+                            {suggestions.map((p, i) => (
+                                <div key={i} className="p-2 hover:bg-gray-200 cursor-pointer"
+                                    onClick={() => handleSelectLocation(p)}>
+                                    {p.display_name}
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
+
+                <button onClick={() => setShowMap(true)} className="w-full bg-blue-500 mt-3 p-2 rounded">
+                    <MapPin size={16} /> Select on Map
                 </button>
 
-                {/* STATUS */}
-                <p className="text-sm">{locationStatus}</p>
-
-                {/* ADDRESS */}
-                {address && (
-                    <p className="text-xs text-gray-300 mt-2">
-                        📍 {address}
-                    </p>
-                )}
-
-                {/* 🗺️ MAP WITH TRACKING */}
-                {form.latitude && (
-                    <MapContainer
-                        center={driverPosition}
-                        zoom={13}
-                        style={{ height: "250px", marginTop: "10px", borderRadius: "10px" }}
-                    >
-                        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-
-                        {/* 🚑 MOVING AMBULANCE */}
-                        <Marker position={driverPosition} icon={ambulanceIcon}>
-                            <Popup>🚑 Ambulance is coming</Popup>
-                        </Marker>
-
-                        {/* 📍 USER */}
-                        <Marker position={[form.latitude, form.longitude]}>
-                            <Popup>Your Location</Popup>
-                        </Marker>
-
-                        {/* 🔥 ROUTE */}
-                        <Polyline positions={route} color="red" />
-                    </MapContainer>
-                )}
-
-                {/* SUBMIT */}
-                <button
-                    onClick={handleSubmit}
-                    className="w-full bg-red-500 mt-3 p-2 rounded"
-                >
+                <button onClick={handleSubmit} className="w-full bg-red-500 mt-3 p-2 rounded">
                     🚑 Send Request
                 </button>
+
+                {trackingActive && (
+                    <button onClick={handleCancel} className="w-full bg-gray-700 mt-2 p-2 rounded">
+                        ❌ Cancel Request
+                    </button>
+                )}
             </div>
         </div>
     );
