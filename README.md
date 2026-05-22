@@ -57,7 +57,7 @@
 
 ### 📦 Example Request (Update Status)
 
-```json
+
 Day 1 — Project Initialization
 Initialized MERN stack project structure
 Configured React frontend with Vite
@@ -147,10 +147,12 @@ Socket.IO real-time communication
 SOS emergency system
 Role-based authentication
 Admin control center
-Driver management work
-{
-  "status": "ENROUTE"
-}
+Driver management workflow
+Emergency lifecycle management
+Google Maps location integration
+MERN stack architecture
+Responsive modern UI
+
 PENDING → DISPATCHED → ENROUTE → ARRIVED → PICKED_UP → COMPLETED
 
 
@@ -181,9 +183,7 @@ Content-Type: application/json
 
 ---
 
-### 📦 Request Body
-
-```json
+### 📦 Requests
 {
   "coordinates": [longitude, latitude]
 }
@@ -215,7 +215,7 @@ Content-Type: application/json
 
 ### 📦 API Standardization
 - Consistent response format across all endpoints:
-```json
+
 {
   "success": true,
   "message": "...",
