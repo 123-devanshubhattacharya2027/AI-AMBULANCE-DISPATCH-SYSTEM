@@ -6,7 +6,7 @@ const driverSchema = new mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",
             required: true,
-            index: true // ⚡ faster lookup
+            index: true
         },
 
         vehicleNumber: {
@@ -18,10 +18,24 @@ const driverSchema = new mongoose.Schema(
         isAvailable: {
             type: Boolean,
             default: true,
-            index: true // ⚡ used in geo queries
+            index: true
         },
 
-        // 🌍 GEO LOCATION (STEP 4.1 IMPROVED)
+        // ⭐ STEP 2.1 — DRIVER RATING (AI scoring)
+        rating: {
+            type: Number,
+            default: 4.5,
+            min: 1,
+            max: 5
+        },
+
+        // ⏱️ STEP 2.1 — RESPONSE TIME (minutes)
+        responseTime: {
+            type: Number,
+            default: 5 // average response time
+        },
+
+        // 🌍 GEO LOCATION
         location: {
             type: {
                 type: String,
@@ -32,11 +46,18 @@ const driverSchema = new mongoose.Schema(
             coordinates: {
                 type: [Number], // [longitude, latitude]
                 required: true,
+                default: [0, 0],
                 validate: {
                     validator: function (val) {
-                        return val.length === 2;
+                        return (
+                            val.length === 2 &&
+                            val[0] >= -180 &&
+                            val[0] <= 180 &&
+                            val[1] >= -90 &&
+                            val[1] <= 90
+                        );
                     },
-                    message: "Coordinates must be [longitude, latitude]"
+                    message: "Coordinates must be [lng, lat]"
                 }
             }
         }
@@ -44,10 +65,13 @@ const driverSchema = new mongoose.Schema(
     { timestamps: true }
 );
 
-// 🌍 GEO INDEX (STEP 4.1 CORE)
+// 🌍 GEO INDEX
 driverSchema.index({ location: "2dsphere" });
 
-// ⚡ COMPOUND INDEX (OPTIMIZATION FOR GEO DISPATCH)
-driverSchema.index({ isAvailable: 1, location: "2dsphere" });
+// ⚡ COMPOUND INDEX (OPTIMIZED)
+driverSchema.index({
+    isAvailable: 1,
+    location: "2dsphere"
+});
 
 export default mongoose.model("Driver", driverSchema);

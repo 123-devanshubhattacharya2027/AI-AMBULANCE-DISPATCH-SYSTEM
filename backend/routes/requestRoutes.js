@@ -1,12 +1,15 @@
 import express from "express";
+
 import { protect } from "../middleware/authMiddleware.js";
+
 import { authorizeRoles } from "../middleware/authorizeRoles.js";
 
 import {
     createRequest,
     getMyRequests,
-    getAllRequests, // 🔥 NEW (STEP 2)
+    getAllRequests,
     updateRequestStatus,
+    cancelRequest,
     assignDriver
 } from "../controllers/requestController.js";
 
@@ -18,7 +21,7 @@ const router = express.Router();
 ====================================================
 */
 
-// ✅ Create Emergency Request (Only USER)
+// ✅ Create Emergency Request
 router.post(
     "/",
     protect,
@@ -26,12 +29,20 @@ router.post(
     createRequest
 );
 
-// ✅ Get My Requests (Only USER)
+// ✅ Get My Requests
 router.get(
     "/my",
     protect,
     authorizeRoles("USER"),
     getMyRequests
+);
+
+// ❌ Cancel Request
+router.patch(
+    "/:id/cancel",
+    protect,
+    authorizeRoles("USER"),
+    cancelRequest
 );
 
 /*
@@ -40,7 +51,7 @@ router.get(
 ====================================================
 */
 
-// 🔥 STEP 2 — GET ALL REQUESTS (Only ADMIN)
+// ✅ Get All Requests
 router.get(
     "/",
     protect,
@@ -48,7 +59,7 @@ router.get(
     getAllRequests
 );
 
-// ✅ Assign Driver to Request (Only ADMIN)
+// 🚑 ASSIGN DRIVER
 router.patch(
     "/:id/assign-driver",
     protect,
@@ -62,11 +73,15 @@ router.patch(
 ====================================================
 */
 
-// ✅ Update Request Status (USER / DRIVER / ADMIN)
+// ✅ Update Status
 router.patch(
     "/:id/status",
     protect,
-    authorizeRoles("USER", "DRIVER", "ADMIN"),
+    authorizeRoles(
+        "USER",
+        "DRIVER",
+        "ADMIN"
+    ),
     updateRequestStatus
 );
 

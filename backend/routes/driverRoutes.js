@@ -9,7 +9,7 @@ import {
     updateDriverLocation,
     toggleAvailability,
     getAssignedRequests,
-    getDrivers // 🔥 ADD THIS
+    getDrivers
 } from "../controllers/driverController.js";
 
 const router = express.Router();
@@ -23,7 +23,7 @@ const router = express.Router();
 // ✅ CREATE DRIVER
 router.post("/", protect, authorizeRoles("ADMIN"), createDriver);
 
-// ✅ GET ALL DRIVERS (🔥 STEP 1 FIX)
+// ✅ GET ALL DRIVERS
 router.get("/", protect, authorizeRoles("ADMIN"), getDrivers);
 
 
@@ -33,10 +33,13 @@ router.get("/", protect, authorizeRoles("ADMIN"), getDrivers);
 ========================================
 */
 
-// ✅ DRIVER PROFILE
+// ✅ GET DRIVER PROFILE
 router.get("/me", protect, authorizeRoles("DRIVER"), getMyDriverProfile);
 
-// ✅ UPDATE LOCATION
+// ========================================
+// 📍 STEP 3 — DRIVER LOCATION ROUTE (FINAL)
+// ========================================
+// 🔥 This is the MAIN API used for real-time tracking
 router.patch(
     "/me/location",
     protect,
@@ -45,7 +48,39 @@ router.patch(
     updateDriverLocation
 );
 
-// ✅ TOGGLE AVAILABILITY
+// ========================================
+// 🧪 OPTIONAL DEBUG ROUTE (VERY USEFUL)
+// ========================================
+// 👉 Use this in Postman if socket not working
+router.post(
+    "/test-location",
+    protect,
+    authorizeRoles("DRIVER"),
+    async (req, res) => {
+        const io = req.app.get("io");
+
+        const { latitude, longitude } = req.body;
+
+        const payload = {
+            driverId: req.user._id,
+            coordinates: [latitude, longitude],
+        };
+
+        if (io) {
+            io.emit("location_update", payload);
+        }
+
+        res.json({
+            success: true,
+            message: "Test location emitted",
+            data: payload,
+        });
+    }
+);
+
+// ========================================
+// 🔁 AVAILABILITY
+// ========================================
 router.patch(
     "/me/availability",
     protect,
@@ -53,7 +88,9 @@ router.patch(
     toggleAvailability
 );
 
-// ✅ GET ASSIGNED REQUESTS
+// ========================================
+// 📦 ASSIGNED REQUESTS
+// ========================================
 router.get(
     "/me/requests",
     protect,
@@ -61,4 +98,4 @@ router.get(
     getAssignedRequests
 );
 
-export default router;
+export default router; 

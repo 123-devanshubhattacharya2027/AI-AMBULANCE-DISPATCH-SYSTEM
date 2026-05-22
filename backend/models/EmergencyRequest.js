@@ -1,104 +1,299 @@
 import mongoose from "mongoose";
-import { REQUEST_STATUS, EMERGENCY_TYPES } from "../constants/enums.js";
 
-const emergencyRequestSchema = new mongoose.Schema(
-  {
-    user: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
-    },
+// ==========================================
+// 🚨 EMERGENCY TYPES
+// ==========================================
+const EMERGENCY_TYPES = [
 
-    // 🔥 DRIVER REFERENCE (CORRECT)
-    assignedDriver: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Driver",
-      default: null,
-    },
+  // 🩺 MEDICAL
+  "Heart Attack",
+  "Stroke",
+  "Seizure",
+  "Unconscious",
+  "Chest Pain",
+  "Breathing Problem",
+  "Asthma Attack",
+  "Kidney Failure",
+  "High Fever",
+  "COVID Emergency",
+  "Cardiac Arrest",
+  "Low Oxygen",
+  "Blood Vomiting",
+  "Severe Allergic Reaction",
+  "Diabetic Emergency",
+  "Paralysis",
+  "Panic Attack",
+  "Severe Dehydration",
+  "Food Poisoning",
+  "Septic Shock",
+  "Organ Failure",
+  "Respiratory Failure",
 
-    emergencyType: {
-      type: String,
-      enum: Object.values(EMERGENCY_TYPES),
-      required: true,
-    },
+  // 🩹 TRAUMA
+  "Fracture",
+  "Head Injury",
+  "Burns",
+  "Internal Bleeding",
+  "Electric Shock",
+  "Fire Injury",
+  "Severe Head Trauma",
+  "Deep Cut Injury",
+  "Spinal Injury",
+  "Bone Dislocation",
+  "Crush Injury",
+  "Knife Injury",
+  "Gunshot Injury",
 
-    description: {
-      type: String,
-      required: true,
-      trim: true,
-    },
+  // 🚗 ACCIDENTS
+  "Road Accident",
+  "Bike Crash",
+  "Car Crash",
+  "Truck Collision",
+  "Bus Accident",
+  "Train Accident",
+  "Industrial Accident",
+  "Factory Accident",
+  "Construction Accident",
+  "Building Collapse",
+  "Highway Crash",
+  "Hit and Run",
+  "Explosion Injury",
+  "Fuel Leak Accident",
+  "Fall",
 
-    location: {
-      type: {
-        type: String,
-        enum: ["Point"],
-        default: "Point",
-      },
-      coordinates: {
-        type: [Number],
+  // 🔥 FIRE & DISASTER
+  "House Fire",
+  "Gas Explosion",
+  "Chemical Burn",
+  "Wildfire Injury",
+  "Smoke Inhalation",
+  "Flood Rescue",
+  "Earthquake Injury",
+  "Storm Injury",
+  "Lightning Strike",
+  "Toxic Gas Exposure",
+  "Radiation Exposure",
+
+  // ☠️ CRITICAL
+  "Not Breathing",
+  "Massive Bleeding",
+  "Brain Hemorrhage",
+  "Coma",
+  "Near Death Condition",
+  "Multiple Organ Failure",
+  "Critical Infection",
+  "Life Support Needed",
+  "Drowning",
+  "Poisoning",
+  "Snake Bite",
+
+  // 👶 WOMEN & CHILD
+  "Pregnancy Emergency",
+  "Labor Pain",
+  "Pregnancy Bleeding",
+  "Premature Labor",
+  "Child Birth Emergency",
+  "Infant Breathing Problem",
+  "Newborn Emergency",
+  "Child Injury",
+  "Child Unconscious",
+
+  // 🧠 MENTAL HEALTH
+  "Suicide Attempt",
+  "Self Harm",
+  "Drug Overdose",
+  "Alcohol Poisoning",
+  "Mental Breakdown",
+  "Psychiatric Emergency",
+  "Violent Behavior",
+  "Hallucination",
+  "Extreme Anxiety",
+
+  // 🐍 ANIMAL / ENVIRONMENTAL
+  "Dog Bite",
+  "Monkey Bite",
+  "Animal Attack",
+  "Scorpion Sting",
+  "Insect Allergy",
+  "Heat Stroke",
+  "Hypothermia",
+  "Water Contamination",
+
+  // 🚨 SPECIAL
+  "SOS Emergency",
+  "OTHER",
+];
+
+// ==========================================
+// 🚨 REQUEST STATUS
+// ==========================================
+const REQUEST_STATUS = [
+  "PENDING",
+  "DISPATCHED",
+  "ARRIVED",
+  "IN_TRANSIT",
+  "COMPLETED",
+  "CANCELLED",
+];
+
+// ==========================================
+// 🚑 EMERGENCY REQUEST SCHEMA
+// ==========================================
+const emergencyRequestSchema =
+  new mongoose.Schema(
+
+    {
+      // 👤 USER
+      user: {
+        type:
+          mongoose.Schema.Types.ObjectId,
+
+        ref: "User",
+
         required: true,
-        validate: {
-          validator: function (val) {
-            return val.length === 2;
-          },
-          message: "Coordinates must be [longitude, latitude]",
-        },
       },
-    },
 
-    status: {
-      type: String,
-      enum: Object.values(REQUEST_STATUS),
-      default: REQUEST_STATUS.PENDING,
-    },
+      // 🚨 EMERGENCY TYPE
+      emergencyType: {
 
-    history: [
-      {
-        status: {
+        type: String,
+
+        required: true,
+
+        enum: EMERGENCY_TYPES,
+
+        trim: true,
+      },
+
+      // 📝 DESCRIPTION
+      description: {
+
+        type: String,
+
+        trim: true,
+
+        default:
+          "Emergency assistance required",
+      },
+
+      // 📍 GEO LOCATION
+      location: {
+
+        type: {
+
           type: String,
-          enum: Object.values(REQUEST_STATUS),
+
+          enum: ["Point"],
+
+          required: true,
         },
-        changedAt: {
-          type: Date,
-          default: Date.now,
+
+        coordinates: {
+
+          type: [Number],
+
+          required: true,
         },
       },
-    ],
 
-    severityScore: {
-      type: Number,
-      default: 0,
+      // 🚦 STATUS
+      status: {
+
+        type: String,
+
+        enum: REQUEST_STATUS,
+
+        default: "PENDING",
+      },
+
+      // 🚑 DRIVER
+      assignedDriver: {
+
+        type:
+          mongoose.Schema.Types.ObjectId,
+
+        ref: "Driver",
+
+        default: null,
+      },
+
+      // 🧠 AI SEVERITY
+      severity: {
+
+        type: String,
+
+        enum: [
+          "LOW",
+          "MEDIUM",
+          "HIGH",
+          "CRITICAL",
+        ],
+
+        default: "MEDIUM",
+      },
+
+      // 🔥 AI PRIORITY
+      priority: {
+
+        type: Number,
+
+        default: 5,
+      },
+
+      // 🧠 AI SUMMARY
+      aiSummary: {
+
+        type: String,
+
+        default: "",
+      },
+
+      // ⏱️ ETA
+      eta: {
+
+        type: Number,
+
+        default: null,
+      },
+
+      // 📜 HISTORY TRACKING
+      history: [
+
+        {
+          status: String,
+
+          changedAt: {
+            type: Date,
+
+            default: Date.now,
+          },
+
+          changedBy: {
+            type:
+              mongoose.Schema.Types.ObjectId,
+
+            ref: "User",
+          },
+        },
+      ],
     },
 
-    fraudScore: {
-      type: Number,
-      default: 0,
-    },
-  },
-  {
-    timestamps: true,
-    toJSON: { versionKey: false },
-    toObject: { versionKey: false },
-  }
-);
+    {
+      timestamps: true,
+    }
+  );
 
-// 🌍 GEO INDEX (for AI dispatch later)
-emergencyRequestSchema.index({ location: "2dsphere" });
-
-// ⚡ OPTIMIZATION INDEX
-emergencyRequestSchema.index({ status: 1, createdAt: -1 });
-
-// 🔥 OPTIONAL: AUTO POPULATE (VERY USEFUL)
-emergencyRequestSchema.pre(/^find/, function () {
-  this.populate("user", "name email");
-
-  this.populate({
-    path: "assignedDriver",
-    populate: {
-      path: "user",
-      select: "name email",
-    },
-  });
+// ==========================================
+// 🌍 GEO INDEX
+// ==========================================
+emergencyRequestSchema.index({
+  location: "2dsphere",
 });
 
-export default mongoose.model("EmergencyRequest", emergencyRequestSchema);
+// ==========================================
+// 🚀 EXPORT MODEL
+// ==========================================
+export default mongoose.model(
+  "EmergencyRequest",
+  emergencyRequestSchema
+);

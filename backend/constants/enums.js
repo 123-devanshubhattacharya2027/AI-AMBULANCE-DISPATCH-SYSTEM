@@ -5,13 +5,18 @@ export const USER_ROLES = {
 };
 
 export const REQUEST_STATUS = {
+
     PENDING: "PENDING",
+
     DISPATCHED: "DISPATCHED",
-    ENROUTE: "ENROUTE",
+
     ARRIVED: "ARRIVED",
-    PICKED_UP: "PICKED_UP",
+
+    IN_TRANSIT: "IN_TRANSIT",
+
     COMPLETED: "COMPLETED",
-    CANCELLED: "CANCELLED"
+
+    CANCELLED: "CANCELLED",
 };
 
 export const EMERGENCY_TYPES = {

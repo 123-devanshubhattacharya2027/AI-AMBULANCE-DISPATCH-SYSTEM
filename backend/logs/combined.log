@@ -1048,3 +1048,276 @@
 {"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5ZDk0NGYxNTQ1Zjk3YmFhNjMwMjZmYiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3NTkyODc2NSwiZXhwIjoxNzc2MDE1MTY1fQ.4p6OOMfEbulpsCgr_IDKRa4A-TXSyyVj3HHWbDXlGBc"}
 {"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5ZDg4Y2M4MmM4OGUwYzdkYTczZmI4NiIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzc1OTI5ODczLCJleHAiOjE3NzYwMTYyNzN9.VdcaHb5HYRZP17q-gth_A_8vZupgi1xgQZQ4AOk_uWI"}
 {"level":"error","message":"Invalid coordinates","stack":"Error: Invalid coordinates\n    at file:///C:/Users/This%20PC/OneDrive/Desktop/JAVA%20Coding/JAVA%20Coding/New%20folder/AI-AMBULANCE-DISPATCH-SYSTEM/backend/controllers/requestController.js:27:15\n    at asyncUtilWrap (C:\\Users\\This PC\\OneDrive\\Desktop\\JAVA Coding\\JAVA Coding\\New folder\\AI-AMBULANCE-DISPATCH-SYSTEM\\node_modules\\express-async-handler\\index.js:3:20)\n    at Layer.handleRequest (C:\\Users\\This PC\\OneDrive\\Desktop\\JAVA Coding\\JAVA Coding\\New folder\\AI-AMBULANCE-DISPATCH-SYSTEM\\backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (C:\\Users\\This PC\\OneDrive\\Desktop\\JAVA Coding\\JAVA Coding\\New folder\\AI-AMBULANCE-DISPATCH-SYSTEM\\backend\\node_modules\\router\\lib\\route.js:157:13)\n    at file:///C:/Users/This%20PC/OneDrive/Desktop/JAVA%20Coding/JAVA%20Coding/New%20folder/AI-AMBULANCE-DISPATCH-SYSTEM/backend/middleware/authorizeRoles.js:24:9\n    at Layer.handleRequest (C:\\Users\\This PC\\OneDrive\\Desktop\\JAVA Coding\\JAVA Coding\\New folder\\AI-AMBULANCE-DISPATCH-SYSTEM\\backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (C:\\Users\\This PC\\OneDrive\\Desktop\\JAVA Coding\\JAVA Coding\\New folder\\AI-AMBULANCE-DISPATCH-SYSTEM\\backend\\node_modules\\router\\lib\\route.js:157:13)\n    at protect (file:///C:/Users/This%20PC/OneDrive/Desktop/JAVA%20Coding/JAVA%20Coding/New%20folder/AI-AMBULANCE-DISPATCH-SYSTEM/backend/middleware/authMiddleware.js:40:9)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)","statusCode":500}
+{"level":"info","message":"Socket connected: C-wFvX2Rm_AEsRmGAAAC"}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5ZDg4Y2M4MmM4OGUwYzdkYTczZmI4NiIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzc1OTMyNjQ1LCJleHAiOjE3NzYwMTkwNDV9.8e_Sz30Gg-HkT5qhPHWCyCzrAKKX8d5p3QsBKuKG-hk"}
+{"level":"error","message":"EmergencyRequest validation failed: emergencyType: `accident` is not a valid enum value for path `emergencyType`.","stack":"ValidationError: EmergencyRequest validation failed: emergencyType: `accident` is not a valid enum value for path `emergencyType`.\n    at Document.invalidate (C:\\Users\\This PC\\OneDrive\\Desktop\\JAVA Coding\\JAVA Coding\\New folder\\AI-AMBULANCE-DISPATCH-SYSTEM\\backend\\node_modules\\mongoose\\lib\\document.js:3420:32)\n    at validatePath (C:\\Users\\This PC\\OneDrive\\Desktop\\JAVA Coding\\JAVA Coding\\New folder\\AI-AMBULANCE-DISPATCH-SYSTEM\\backend\\node_modules\\mongoose\\lib\\document.js:3192:13)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async Promise.all (index 2)\n    at async model.$__validate (C:\\Users\\This PC\\OneDrive\\Desktop\\JAVA Coding\\JAVA Coding\\New folder\\AI-AMBULANCE-DISPATCH-SYSTEM\\backend\\node_modules\\mongoose\\lib\\document.js:3133:3)\n    at async model.validate (C:\\Users\\This PC\\OneDrive\\Desktop\\JAVA Coding\\JAVA Coding\\New folder\\AI-AMBULANCE-DISPATCH-SYSTEM\\backend\\node_modules\\mongoose\\lib\\document.js:2702:5)\n    at async model.validateBeforeSavePreSave (C:\\Users\\This PC\\OneDrive\\Desktop\\JAVA Coding\\JAVA Coding\\New folder\\AI-AMBULANCE-DISPATCH-SYSTEM\\backend\\node_modules\\mongoose\\lib\\plugins\\validateBeforeSave.js:39:5)\n    at async Kareem.execPre (C:\\Users\\This PC\\OneDrive\\Desktop\\JAVA Coding\\JAVA Coding\\New folder\\AI-AMBULANCE-DISPATCH-SYSTEM\\backend\\node_modules\\kareem\\index.js:70:24)\n    at async model.$__save (C:\\Users\\This PC\\OneDrive\\Desktop\\JAVA Coding\\JAVA Coding\\New folder\\AI-AMBULANCE-DISPATCH-SYSTEM\\backend\\node_modules\\mongoose\\lib\\model.js:376:5)\n    at async model.save (C:\\Users\\This PC\\OneDrive\\Desktop\\JAVA Coding\\JAVA Coding\\New folder\\AI-AMBULANCE-DISPATCH-SYSTEM\\backend\\node_modules\\mongoose\\lib\\model.js:642:5)","statusCode":500}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5ZDg4Y2M4MmM4OGUwYzdkYTczZmI4NiIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzc1OTMyNjQ1LCJleHAiOjE3NzYwMTkwNDV9.8e_Sz30Gg-HkT5qhPHWCyCzrAKKX8d5p3QsBKuKG-hk"}
+{"level":"error","message":"EmergencyRequest validation failed: emergencyType: `accident` is not a valid enum value for path `emergencyType`.","stack":"ValidationError: EmergencyRequest validation failed: emergencyType: `accident` is not a valid enum value for path `emergencyType`.\n    at Document.invalidate (C:\\Users\\This PC\\OneDrive\\Desktop\\JAVA Coding\\JAVA Coding\\New folder\\AI-AMBULANCE-DISPATCH-SYSTEM\\backend\\node_modules\\mongoose\\lib\\document.js:3420:32)\n    at validatePath (C:\\Users\\This PC\\OneDrive\\Desktop\\JAVA Coding\\JAVA Coding\\New folder\\AI-AMBULANCE-DISPATCH-SYSTEM\\backend\\node_modules\\mongoose\\lib\\document.js:3192:13)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async Promise.all (index 2)\n    at async model.$__validate (C:\\Users\\This PC\\OneDrive\\Desktop\\JAVA Coding\\JAVA Coding\\New folder\\AI-AMBULANCE-DISPATCH-SYSTEM\\backend\\node_modules\\mongoose\\lib\\document.js:3133:3)\n    at async model.validate (C:\\Users\\This PC\\OneDrive\\Desktop\\JAVA Coding\\JAVA Coding\\New folder\\AI-AMBULANCE-DISPATCH-SYSTEM\\backend\\node_modules\\mongoose\\lib\\document.js:2702:5)\n    at async model.validateBeforeSavePreSave (C:\\Users\\This PC\\OneDrive\\Desktop\\JAVA Coding\\JAVA Coding\\New folder\\AI-AMBULANCE-DISPATCH-SYSTEM\\backend\\node_modules\\mongoose\\lib\\plugins\\validateBeforeSave.js:39:5)\n    at async Kareem.execPre (C:\\Users\\This PC\\OneDrive\\Desktop\\JAVA Coding\\JAVA Coding\\New folder\\AI-AMBULANCE-DISPATCH-SYSTEM\\backend\\node_modules\\kareem\\index.js:70:24)\n    at async model.$__save (C:\\Users\\This PC\\OneDrive\\Desktop\\JAVA Coding\\JAVA Coding\\New folder\\AI-AMBULANCE-DISPATCH-SYSTEM\\backend\\node_modules\\mongoose\\lib\\model.js:376:5)\n    at async model.save (C:\\Users\\This PC\\OneDrive\\Desktop\\JAVA Coding\\JAVA Coding\\New folder\\AI-AMBULANCE-DISPATCH-SYSTEM\\backend\\node_modules\\mongoose\\lib\\model.js:642:5)","statusCode":500}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5ZDg4Y2M4MmM4OGUwYzdkYTczZmI4NiIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzc1OTMyNjQ1LCJleHAiOjE3NzYwMTkwNDV9.8e_Sz30Gg-HkT5qhPHWCyCzrAKKX8d5p3QsBKuKG-hk"}
+{"level":"error","message":"EmergencyRequest validation failed: emergencyType: `accident` is not a valid enum value for path `emergencyType`.","stack":"ValidationError: EmergencyRequest validation failed: emergencyType: `accident` is not a valid enum value for path `emergencyType`.\n    at Document.invalidate (C:\\Users\\This PC\\OneDrive\\Desktop\\JAVA Coding\\JAVA Coding\\New folder\\AI-AMBULANCE-DISPATCH-SYSTEM\\backend\\node_modules\\mongoose\\lib\\document.js:3420:32)\n    at validatePath (C:\\Users\\This PC\\OneDrive\\Desktop\\JAVA Coding\\JAVA Coding\\New folder\\AI-AMBULANCE-DISPATCH-SYSTEM\\backend\\node_modules\\mongoose\\lib\\document.js:3192:13)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async Promise.all (index 2)\n    at async model.$__validate (C:\\Users\\This PC\\OneDrive\\Desktop\\JAVA Coding\\JAVA Coding\\New folder\\AI-AMBULANCE-DISPATCH-SYSTEM\\backend\\node_modules\\mongoose\\lib\\document.js:3133:3)\n    at async model.validate (C:\\Users\\This PC\\OneDrive\\Desktop\\JAVA Coding\\JAVA Coding\\New folder\\AI-AMBULANCE-DISPATCH-SYSTEM\\backend\\node_modules\\mongoose\\lib\\document.js:2702:5)\n    at async model.validateBeforeSavePreSave (C:\\Users\\This PC\\OneDrive\\Desktop\\JAVA Coding\\JAVA Coding\\New folder\\AI-AMBULANCE-DISPATCH-SYSTEM\\backend\\node_modules\\mongoose\\lib\\plugins\\validateBeforeSave.js:39:5)\n    at async Kareem.execPre (C:\\Users\\This PC\\OneDrive\\Desktop\\JAVA Coding\\JAVA Coding\\New folder\\AI-AMBULANCE-DISPATCH-SYSTEM\\backend\\node_modules\\kareem\\index.js:70:24)\n    at async model.$__save (C:\\Users\\This PC\\OneDrive\\Desktop\\JAVA Coding\\JAVA Coding\\New folder\\AI-AMBULANCE-DISPATCH-SYSTEM\\backend\\node_modules\\mongoose\\lib\\model.js:376:5)\n    at async model.save (C:\\Users\\This PC\\OneDrive\\Desktop\\JAVA Coding\\JAVA Coding\\New folder\\AI-AMBULANCE-DISPATCH-SYSTEM\\backend\\node_modules\\mongoose\\lib\\model.js:642:5)","statusCode":500}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5ZDg4Y2M4MmM4OGUwYzdkYTczZmI4NiIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzc1OTMyNjQ1LCJleHAiOjE3NzYwMTkwNDV9.8e_Sz30Gg-HkT5qhPHWCyCzrAKKX8d5p3QsBKuKG-hk"}
+{"level":"error","message":"EmergencyRequest validation failed: emergencyType: `accident` is not a valid enum value for path `emergencyType`.","stack":"ValidationError: EmergencyRequest validation failed: emergencyType: `accident` is not a valid enum value for path `emergencyType`.\n    at Document.invalidate (C:\\Users\\This PC\\OneDrive\\Desktop\\JAVA Coding\\JAVA Coding\\New folder\\AI-AMBULANCE-DISPATCH-SYSTEM\\backend\\node_modules\\mongoose\\lib\\document.js:3420:32)\n    at validatePath (C:\\Users\\This PC\\OneDrive\\Desktop\\JAVA Coding\\JAVA Coding\\New folder\\AI-AMBULANCE-DISPATCH-SYSTEM\\backend\\node_modules\\mongoose\\lib\\document.js:3192:13)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async Promise.all (index 2)\n    at async model.$__validate (C:\\Users\\This PC\\OneDrive\\Desktop\\JAVA Coding\\JAVA Coding\\New folder\\AI-AMBULANCE-DISPATCH-SYSTEM\\backend\\node_modules\\mongoose\\lib\\document.js:3133:3)\n    at async model.validate (C:\\Users\\This PC\\OneDrive\\Desktop\\JAVA Coding\\JAVA Coding\\New folder\\AI-AMBULANCE-DISPATCH-SYSTEM\\backend\\node_modules\\mongoose\\lib\\document.js:2702:5)\n    at async model.validateBeforeSavePreSave (C:\\Users\\This PC\\OneDrive\\Desktop\\JAVA Coding\\JAVA Coding\\New folder\\AI-AMBULANCE-DISPATCH-SYSTEM\\backend\\node_modules\\mongoose\\lib\\plugins\\validateBeforeSave.js:39:5)\n    at async Kareem.execPre (C:\\Users\\This PC\\OneDrive\\Desktop\\JAVA Coding\\JAVA Coding\\New folder\\AI-AMBULANCE-DISPATCH-SYSTEM\\backend\\node_modules\\kareem\\index.js:70:24)\n    at async model.$__save (C:\\Users\\This PC\\OneDrive\\Desktop\\JAVA Coding\\JAVA Coding\\New folder\\AI-AMBULANCE-DISPATCH-SYSTEM\\backend\\node_modules\\mongoose\\lib\\model.js:376:5)\n    at async model.save (C:\\Users\\This PC\\OneDrive\\Desktop\\JAVA Coding\\JAVA Coding\\New folder\\AI-AMBULANCE-DISPATCH-SYSTEM\\backend\\node_modules\\mongoose\\lib\\model.js:642:5)","statusCode":500}
+{"level":"info","message":"Socket disconnected: C-wFvX2Rm_AEsRmGAAAC"}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5ZDk0MzMxNTQ1Zjk3YmFhNjMwMjZlNyIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3NTkzMjcxOSwiZXhwIjoxNzc2MDE5MTE5fQ.4abBjk6z2vrn6b63SfgP698YXz5G_FZ_FWtqtGqMCWA"}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5ZDk0MzMxNTQ1Zjk3YmFhNjMwMjZlNyIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3NTkzMjcxOSwiZXhwIjoxNzc2MDE5MTE5fQ.4abBjk6z2vrn6b63SfgP698YXz5G_FZ_FWtqtGqMCWA"}
+{"level":"info","message":"Server running on port 5000"}
+{"level":"info","message":"MongoDB Connected"}
+{"level":"info","message":"Server running on port 5000"}
+{"level":"info","message":"MongoDB Connected"}
+{"level":"info","message":"Server running on port 5000"}
+{"level":"info","message":"MongoDB Connected"}
+{"level":"info","message":"Server running on port 5000"}
+{"level":"info","message":"MongoDB Connected"}
+{"level":"info","message":"Server running on port 5000"}
+{"level":"info","message":"MongoDB Connected"}
+{"level":"info","message":"Server running on port 5000"}
+{"level":"info","message":"MongoDB Connected"}
+{"level":"info","message":"Server running on port 5000"}
+{"level":"info","message":"MongoDB Connected"}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5ZDk0NGYxNTQ1Zjk3YmFhNjMwMjZmYiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3NzIwNTkwNywiZXhwIjoxNzc3MjkyMzA3fQ.qwgp7LkAXpGzUcUDEFCpjTrCVlaY_JLqYPAwBbWIPqU"}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5ZDk0NGYxNTQ1Zjk3YmFhNjMwMjZmYiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3NzIwNTkwNywiZXhwIjoxNzc3MjkyMzA3fQ.qwgp7LkAXpGzUcUDEFCpjTrCVlaY_JLqYPAwBbWIPqU"}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5ZDk0NGYxNTQ1Zjk3YmFhNjMwMjZmYiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3NzIwNTkwNywiZXhwIjoxNzc3MjkyMzA3fQ.qwgp7LkAXpGzUcUDEFCpjTrCVlaY_JLqYPAwBbWIPqU"}
+{"level":"info","message":"Socket connected: jBKzHvM6Fx9GGKlGAAAC"}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5ZDg4Y2M4MmM4OGUwYzdkYTczZmI4NiIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzc3MjA1OTIzLCJleHAiOjE3NzcyOTIzMjN9.Sf-8-55I9xGcYTawv738IihbLFopCdGlvq3JZ9W2H8w"}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5ZDg4Y2M4MmM4OGUwYzdkYTczZmI4NiIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzc3MjA1OTIzLCJleHAiOjE3NzcyOTIzMjN9.Sf-8-55I9xGcYTawv738IihbLFopCdGlvq3JZ9W2H8w"}
+{"level":"info","message":"Socket disconnected: jBKzHvM6Fx9GGKlGAAAC"}
+{"level":"info","message":"Socket connected: fpy98N9rSi0hL9GzAAAF"}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5ZDg4Y2M4MmM4OGUwYzdkYTczZmI4NiIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzc3MjA1OTIzLCJleHAiOjE3NzcyOTIzMjN9.Sf-8-55I9xGcYTawv738IihbLFopCdGlvq3JZ9W2H8w"}
+{"level":"info","message":"Server running on port 5000"}
+{"level":"info","message":"MongoDB Connected"}
+{"level":"info","message":"Socket connected: KUyVarvlJhAuZo6-AAAB"}
+{"level":"info","message":"Server running on port 5000"}
+{"level":"info","message":"MongoDB Connected"}
+{"level":"info","message":"Socket connected: JlBlBqrRD1mKXcHDAAAB"}
+{"level":"info","message":"Socket disconnected: JlBlBqrRD1mKXcHDAAAB"}
+{"level":"info","message":"Socket connected: ReTlAqTRLUBz7K6FAAAE"}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5ZDg4Y2M4MmM4OGUwYzdkYTczZmI4NiIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzc3MjA1OTIzLCJleHAiOjE3NzcyOTIzMjN9.Sf-8-55I9xGcYTawv738IihbLFopCdGlvq3JZ9W2H8w"}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5ZDg4Y2M4MmM4OGUwYzdkYTczZmI4NiIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzc3MjA1OTIzLCJleHAiOjE3NzcyOTIzMjN9.Sf-8-55I9xGcYTawv738IihbLFopCdGlvq3JZ9W2H8w"}
+{"level":"info","message":"Server running on port 5000"}
+{"level":"info","message":"MongoDB Connected"}
+{"level":"info","message":"Socket connected: sKbkfX0Xy6rgzZGMAAAB"}
+{"level":"info","message":"Socket disconnected: sKbkfX0Xy6rgzZGMAAAB"}
+{"level":"info","message":"Socket connected: PBZNQ8-pjEe7fRkmAAAE"}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5ZDg4Y2M4MmM4OGUwYzdkYTczZmI4NiIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzc3MjA1OTIzLCJleHAiOjE3NzcyOTIzMjN9.Sf-8-55I9xGcYTawv738IihbLFopCdGlvq3JZ9W2H8w"}
+{"level":"info","message":"Server running on port 5000"}
+{"level":"info","message":"MongoDB Connected"}
+{"level":"info","message":"Socket connected: E7pgXR8WkqRDS3-xAAAB"}
+{"level":"info","message":"Server running on port 5000"}
+{"level":"info","message":"MongoDB Connected"}
+{"level":"info","message":"Socket connected: u2IDdswaXVcSvQbVAAAB"}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5ZDg4Y2M4MmM4OGUwYzdkYTczZmI4NiIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzc3MjA2ODE5LCJleHAiOjE3NzcyOTMyMTl9.3DxqmfgbkoR4CDiwYzn2p7zfW2BG13FKATX_xQxvxIk"}
+{"level":"info","message":"Socket disconnected: u2IDdswaXVcSvQbVAAAB"}
+{"level":"info","message":"Socket connected: KoUs-5etlbVP1nP2AAAE"}
+{"level":"info","message":"Server running on port 5000"}
+{"level":"info","message":"MongoDB Connected"}
+{"level":"info","message":"Socket connected: ZtLgdmZovAKY5PboAAAB"}
+{"level":"info","message":"Socket disconnected: ZtLgdmZovAKY5PboAAAB"}
+{"level":"info","message":"Socket connected: KTprg0jnvMSXJV-JAAAE"}
+{"level":"info","message":"Socket disconnected: KTprg0jnvMSXJV-JAAAE"}
+{"level":"info","message":"Socket connected: pEOHH6yrG0xpIl2_AAAH"}
+{"level":"info","message":"Socket disconnected: pEOHH6yrG0xpIl2_AAAH"}
+{"level":"info","message":"Socket connected: _43ZT9L6NRdVKFj1AAAK"}
+{"level":"info","message":"Socket disconnected: _43ZT9L6NRdVKFj1AAAK"}
+{"level":"info","message":"Socket connected: 3UqvxBf8CvqBJK8lAAAN"}
+{"level":"info","message":"Socket disconnected: 3UqvxBf8CvqBJK8lAAAN"}
+{"level":"info","message":"Socket connected: xjpBAooGCQRlti8KAAAQ"}
+{"level":"info","message":"Socket disconnected: xjpBAooGCQRlti8KAAAQ"}
+{"level":"info","message":"Socket connected: z4f1vq1lSOyVIRGuAAAT"}
+{"level":"info","message":"Socket disconnected: z4f1vq1lSOyVIRGuAAAT"}
+{"level":"info","message":"Server running on port 5000"}
+{"level":"info","message":"MongoDB Connected"}
+{"level":"info","message":"Server running on port 5000"}
+{"level":"info","message":"MongoDB Connected"}
+{"level":"info","message":"Socket connected: GwDgTdKaJUbkk2QeAAAC"}
+{"level":"info","message":"Socket disconnected: GwDgTdKaJUbkk2QeAAAC"}
+{"level":"info","message":"Socket connected: 9isQwMEhwnz1X-N9AAAE"}
+{"level":"info","message":"Socket disconnected: 9isQwMEhwnz1X-N9AAAE"}
+{"level":"info","message":"Socket connected: 9OYTtOIV5gZ55_AhAAAG"}
+{"level":"info","message":"Socket disconnected: 9OYTtOIV5gZ55_AhAAAG"}
+{"level":"info","message":"Socket connected: 2Gwta5HEAYL5RjsTAAAI"}
+{"level":"info","message":"Socket disconnected: 2Gwta5HEAYL5RjsTAAAI"}
+{"level":"info","message":"Socket connected: Jlvb5sl29lOqpZeLAAAK"}
+{"level":"info","message":"Socket disconnected: Jlvb5sl29lOqpZeLAAAK"}
+{"level":"info","message":"Socket connected: r4c8jmGhQgQ8GS64AAAM"}
+{"level":"info","message":"Socket disconnected: r4c8jmGhQgQ8GS64AAAM"}
+{"level":"info","message":"Socket connected: ydBotvAPG92bKbfoAAAO"}
+{"level":"info","message":"Socket disconnected: ydBotvAPG92bKbfoAAAO"}
+{"level":"info","message":"Socket connected: 3QOTwrqSPNh5yeFVAAAR"}
+{"level":"info","message":"Socket disconnected: 3QOTwrqSPNh5yeFVAAAR"}
+{"level":"info","message":"Socket connected: LFccrUYhmqBzhHh3AAAT"}
+{"level":"info","message":"Socket disconnected: LFccrUYhmqBzhHh3AAAT"}
+{"level":"info","message":"Socket connected: wXgT4JgWVdX1KQmSAAAV"}
+{"level":"info","message":"Socket disconnected: wXgT4JgWVdX1KQmSAAAV"}
+{"level":"info","message":"Socket connected: YigrGzpZQS5PtLPRAAAY"}
+{"level":"info","message":"Socket disconnected: YigrGzpZQS5PtLPRAAAY"}
+{"level":"info","message":"Socket connected: m000KWsoGk2BGld3AAAa"}
+{"level":"info","message":"Socket disconnected: m000KWsoGk2BGld3AAAa"}
+{"level":"info","message":"Socket connected: 9kN3W4RyoX5AmZy6AAAd"}
+{"level":"info","message":"Socket disconnected: 9kN3W4RyoX5AmZy6AAAd"}
+{"level":"info","message":"Socket connected: D1SiP5z0LBr2lUfrAAAf"}
+{"level":"info","message":"Socket disconnected: D1SiP5z0LBr2lUfrAAAf"}
+{"level":"info","message":"Server running on port 5000"}
+{"level":"info","message":"MongoDB Connected"}
+{"level":"info","message":"Server running on port 5000"}
+{"level":"info","message":"MongoDB Connected"}
+{"level":"info","message":"Server running on port 5000"}
+{"level":"info","message":"MongoDB Connected"}
+{"level":"info","message":"Socket connected: yNaOgz4VLbtmYvoJAAAB"}
+{"level":"info","message":"Socket disconnected: yNaOgz4VLbtmYvoJAAAB"}
+{"level":"info","message":"Socket connected: euPY_z8KMm4YmoGgAAAE"}
+{"level":"info","message":"Socket disconnected: euPY_z8KMm4YmoGgAAAE"}
+{"level":"info","message":"Socket connected: 6X3LzwCBKgJGhc4FAAAG"}
+{"level":"info","message":"Server running on port 5000"}
+{"level":"info","message":"Socket connected: 2634CB0597L2D8iUAAAB"}
+{"level":"info","message":"MongoDB Connected"}
+{"level":"info","message":"Server running on port 5000"}
+{"level":"info","message":"MongoDB Connected"}
+{"level":"info","message":"Socket connected: hH7BdqYJCO73FCCKAAAB"}
+{"level":"info","message":"Server running on port 5000"}
+{"level":"info","message":"MongoDB Connected"}
+{"level":"error","message":"Invalid credentials","stack":"Error: Invalid credentials\n    at file:///C:/Users/This%20PC/OneDrive/Desktop/JAVA%20Coding/JAVA%20Coding/New%20folder/AI-AMBULANCE-DISPATCH-SYSTEM/backend/controllers/authController.js:68:11\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)","statusCode":500}
+{"level":"error","message":"User already exists","stack":"Error: User already exists\n    at file:///C:/Users/This%20PC/OneDrive/Desktop/JAVA%20Coding/JAVA%20Coding/New%20folder/AI-AMBULANCE-DISPATCH-SYSTEM/backend/controllers/authController.js:28:11\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)","statusCode":500}
+{"level":"error","message":"User already exists","stack":"Error: User already exists\n    at file:///C:/Users/This%20PC/OneDrive/Desktop/JAVA%20Coding/JAVA%20Coding/New%20folder/AI-AMBULANCE-DISPATCH-SYSTEM/backend/controllers/authController.js:28:11\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)","statusCode":500}
+{"level":"info","message":"Socket connected: QYzXsajvKsSDhoM4AAAC"}
+{"level":"info","message":"Socket disconnected: QYzXsajvKsSDhoM4AAAC"}
+{"level":"info","message":"Socket connected: OHDlRKd9u1HMr8glAAAF"}
+{"level":"info","message":"Socket disconnected: OHDlRKd9u1HMr8glAAAF"}
+{"level":"info","message":"Socket connected: 2cpQQ9Al8fRDuCQpAAAH"}
+{"level":"info","message":"Socket disconnected: 2cpQQ9Al8fRDuCQpAAAH"}
+{"level":"info","message":"Socket connected: gp7V2u9BKVBvyUiNAAAK"}
+{"level":"info","message":"Socket disconnected: gp7V2u9BKVBvyUiNAAAK"}
+{"level":"info","message":"Socket connected: Tm1WlwynRr_eKJtiAAAM"}
+{"level":"info","message":"Socket disconnected: Tm1WlwynRr_eKJtiAAAM"}
+{"level":"info","message":"Socket connected: Tvv1JQ7stA6NzPayAAAP"}
+{"level":"info","message":"Socket disconnected: Tvv1JQ7stA6NzPayAAAP"}
+{"level":"info","message":"Socket connected: APPNE8og1C-pmsELAAAS"}
+{"level":"info","message":"Socket disconnected: APPNE8og1C-pmsELAAAS"}
+{"level":"info","message":"Socket connected: fGNtHhUCpbpKvWI_AAAU"}
+{"level":"info","message":"Socket disconnected: fGNtHhUCpbpKvWI_AAAU"}
+{"level":"info","message":"Socket connected: lDrvTwDgU0y3cmEdAAAX"}
+{"level":"info","message":"Socket disconnected: lDrvTwDgU0y3cmEdAAAX"}
+{"level":"info","message":"Socket connected: X8JYKVrHd23L8HVdAAAZ"}
+{"level":"info","message":"Socket disconnected: X8JYKVrHd23L8HVdAAAZ"}
+{"level":"info","message":"Socket connected: z-hKk0afwZsOxGPwAAAc"}
+{"level":"info","message":"Socket disconnected: z-hKk0afwZsOxGPwAAAc"}
+{"level":"info","message":"Socket connected: xPf1X8o9MXku5hGwAAAe"}
+{"level":"info","message":"Socket disconnected: xPf1X8o9MXku5hGwAAAe"}
+{"level":"info","message":"Socket connected: S48ru3I9w7sjCOaPAAAg"}
+{"level":"info","message":"Socket disconnected: S48ru3I9w7sjCOaPAAAg"}
+{"level":"info","message":"Server running on port 5000"}
+{"level":"info","message":"MongoDB Connected"}
+{"level":"info","message":"Server running on port 5000"}
+{"level":"info","message":"MongoDB Connected"}
+{"level":"info","message":"Socket connected: woQBDfzNc_clru-ZAAAC"}
+{"level":"info","message":"Server running on port 5000"}
+{"level":"info","message":"MongoDB Connected"}
+{"level":"info","message":"Socket connected: DKdCCBwD7ibD7-NEAAAB"}
+{"level":"info","message":"Socket disconnected: DKdCCBwD7ibD7-NEAAAB"}
+{"level":"info","message":"Socket connected: uwgk6sW1TH2Gzy09AAAE"}
+{"level":"info","message":"Server running on port 5000"}
+{"level":"info","message":"MongoDB Connected"}
+{"level":"info","message":"Socket connected: MD8ywwTAPkntNi_9AAAB"}
+{"level":"info","message":"Socket disconnected: MD8ywwTAPkntNi_9AAAB"}
+{"level":"info","message":"Socket connected: EojIJEWwXHyjcyFGAAAE"}
+{"level":"info","message":"Socket disconnected: EojIJEWwXHyjcyFGAAAE"}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5ZDk0NGYxNTQ1Zjk3YmFhNjMwMjZmYiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3OTQ4MjUyMywiZXhwIjoxNzc5NTY4OTIzfQ.csW49vw0kVNRk4nZsForSIBR2Jq8BSV5gAgF--9YF_U"}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5ZDk0NGYxNTQ1Zjk3YmFhNjMwMjZmYiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3OTQ4MjUyMywiZXhwIjoxNzc5NTY4OTIzfQ.csW49vw0kVNRk4nZsForSIBR2Jq8BSV5gAgF--9YF_U"}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5ZDk0NGYxNTQ1Zjk3YmFhNjMwMjZmYiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3OTQ4MjUyMywiZXhwIjoxNzc5NTY4OTIzfQ.csW49vw0kVNRk4nZsForSIBR2Jq8BSV5gAgF--9YF_U"}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5ZDk0NGYxNTQ1Zjk3YmFhNjMwMjZmYiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3OTQ4MjUyMywiZXhwIjoxNzc5NTY4OTIzfQ.csW49vw0kVNRk4nZsForSIBR2Jq8BSV5gAgF--9YF_U"}
+{"level":"info","message":"Socket connected: Ml1S-02le8eAal0ZAAAH"}
+{"level":"info","message":"Socket disconnected: Ml1S-02le8eAal0ZAAAH"}
+{"level":"info","message":"Socket connected: tu7z4McVIJcEHljyAAAK"}
+{"level":"info","message":"Socket disconnected: tu7z4McVIJcEHljyAAAK"}
+{"level":"info","message":"Socket connected: gZufxLL9tpeqqalYAAAN"}
+{"level":"info","message":"Socket disconnected: gZufxLL9tpeqqalYAAAN"}
+{"level":"info","message":"Socket connected: vRAQA6DaWN1MfOLcAAAQ"}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhMTBiYzI2ZDQ2ZDc4Nzc0ZWI4MTZiNSIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzc5NDgyODMxLCJleHAiOjE3Nzk1NjkyMzF9.D0BbHHCDVYoqpqhH0k8qwld6fZUbLwBVOjENmXiwGc0"}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhMTBiYzI2ZDQ2ZDc4Nzc0ZWI4MTZiNSIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzc5NDgyODMxLCJleHAiOjE3Nzk1NjkyMzF9.D0BbHHCDVYoqpqhH0k8qwld6fZUbLwBVOjENmXiwGc0"}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhMTBiYzI2ZDQ2ZDc4Nzc0ZWI4MTZiNSIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzc5NDgyODMxLCJleHAiOjE3Nzk1NjkyMzF9.D0BbHHCDVYoqpqhH0k8qwld6fZUbLwBVOjENmXiwGc0"}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhMTBiYzI2ZDQ2ZDc4Nzc0ZWI4MTZiNSIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzc5NDgyODMxLCJleHAiOjE3Nzk1NjkyMzF9.D0BbHHCDVYoqpqhH0k8qwld6fZUbLwBVOjENmXiwGc0"}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhMTBiYzI2ZDQ2ZDc4Nzc0ZWI4MTZiNSIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzc5NDgyODMxLCJleHAiOjE3Nzk1NjkyMzF9.D0BbHHCDVYoqpqhH0k8qwld6fZUbLwBVOjENmXiwGc0"}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhMTBiYzI2ZDQ2ZDc4Nzc0ZWI4MTZiNSIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzc5NDgyODMxLCJleHAiOjE3Nzk1NjkyMzF9.D0BbHHCDVYoqpqhH0k8qwld6fZUbLwBVOjENmXiwGc0"}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhMTBiYzI2ZDQ2ZDc4Nzc0ZWI4MTZiNSIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzc5NDgyODMxLCJleHAiOjE3Nzk1NjkyMzF9.D0BbHHCDVYoqpqhH0k8qwld6fZUbLwBVOjENmXiwGc0"}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhMTBiYzI2ZDQ2ZDc4Nzc0ZWI4MTZiNSIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzc5NDgyODMxLCJleHAiOjE3Nzk1NjkyMzF9.D0BbHHCDVYoqpqhH0k8qwld6fZUbLwBVOjENmXiwGc0"}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhMTBiYzI2ZDQ2ZDc4Nzc0ZWI4MTZiNSIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzc5NDgyODMxLCJleHAiOjE3Nzk1NjkyMzF9.D0BbHHCDVYoqpqhH0k8qwld6fZUbLwBVOjENmXiwGc0"}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhMTBiYzI2ZDQ2ZDc4Nzc0ZWI4MTZiNSIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzc5NDgyODMxLCJleHAiOjE3Nzk1NjkyMzF9.D0BbHHCDVYoqpqhH0k8qwld6fZUbLwBVOjENmXiwGc0"}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhMTBiYzI2ZDQ2ZDc4Nzc0ZWI4MTZiNSIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzc5NDgyODMxLCJleHAiOjE3Nzk1NjkyMzF9.D0BbHHCDVYoqpqhH0k8qwld6fZUbLwBVOjENmXiwGc0"}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhMTBiYzI2ZDQ2ZDc4Nzc0ZWI4MTZiNSIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzc5NDgyODMxLCJleHAiOjE3Nzk1NjkyMzF9.D0BbHHCDVYoqpqhH0k8qwld6fZUbLwBVOjENmXiwGc0"}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhMTBiYzI2ZDQ2ZDc4Nzc0ZWI4MTZiNSIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzc5NDgyODMxLCJleHAiOjE3Nzk1NjkyMzF9.D0BbHHCDVYoqpqhH0k8qwld6fZUbLwBVOjENmXiwGc0"}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhMTBiYzI2ZDQ2ZDc4Nzc0ZWI4MTZiNSIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzc5NDgyODMxLCJleHAiOjE3Nzk1NjkyMzF9.D0BbHHCDVYoqpqhH0k8qwld6fZUbLwBVOjENmXiwGc0"}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhMTBiYzI2ZDQ2ZDc4Nzc0ZWI4MTZiNSIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzc5NDgyODMxLCJleHAiOjE3Nzk1NjkyMzF9.D0BbHHCDVYoqpqhH0k8qwld6fZUbLwBVOjENmXiwGc0"}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhMTBiYzI2ZDQ2ZDc4Nzc0ZWI4MTZiNSIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzc5NDgyODMxLCJleHAiOjE3Nzk1NjkyMzF9.D0BbHHCDVYoqpqhH0k8qwld6fZUbLwBVOjENmXiwGc0"}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhMTBiYzI2ZDQ2ZDc4Nzc0ZWI4MTZiNSIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzc5NDgyODMxLCJleHAiOjE3Nzk1NjkyMzF9.D0BbHHCDVYoqpqhH0k8qwld6fZUbLwBVOjENmXiwGc0"}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhMTBiYzI2ZDQ2ZDc4Nzc0ZWI4MTZiNSIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzc5NDgyODMxLCJleHAiOjE3Nzk1NjkyMzF9.D0BbHHCDVYoqpqhH0k8qwld6fZUbLwBVOjENmXiwGc0"}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhMTBiYzI2ZDQ2ZDc4Nzc0ZWI4MTZiNSIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzc5NDgyODMxLCJleHAiOjE3Nzk1NjkyMzF9.D0BbHHCDVYoqpqhH0k8qwld6fZUbLwBVOjENmXiwGc0"}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhMTBiYzI2ZDQ2ZDc4Nzc0ZWI4MTZiNSIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzc5NDgyODMxLCJleHAiOjE3Nzk1NjkyMzF9.D0BbHHCDVYoqpqhH0k8qwld6fZUbLwBVOjENmXiwGc0"}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhMTBiYzI2ZDQ2ZDc4Nzc0ZWI4MTZiNSIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzc5NDgyODMxLCJleHAiOjE3Nzk1NjkyMzF9.D0BbHHCDVYoqpqhH0k8qwld6fZUbLwBVOjENmXiwGc0"}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhMTBiYzI2ZDQ2ZDc4Nzc0ZWI4MTZiNSIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzc5NDgyODMxLCJleHAiOjE3Nzk1NjkyMzF9.D0BbHHCDVYoqpqhH0k8qwld6fZUbLwBVOjENmXiwGc0"}
+{"level":"info","message":"Socket disconnected: vRAQA6DaWN1MfOLcAAAQ"}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5ZDk0NGYxNTQ1Zjk3YmFhNjMwMjZmYiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3OTQ4Mjk1OSwiZXhwIjoxNzc5NTY5MzU5fQ.aC4nylaMtKdVYIa7N335Nh9_4Q9K1AEJkDj__gMXNkI"}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5ZDk0NGYxNTQ1Zjk3YmFhNjMwMjZmYiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3OTQ4Mjk1OSwiZXhwIjoxNzc5NTY5MzU5fQ.aC4nylaMtKdVYIa7N335Nh9_4Q9K1AEJkDj__gMXNkI"}
+{"level":"info","message":"Socket connected: o7f1FaH1m9YFqE2RAAAT"}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhMTBiYzI2ZDQ2ZDc4Nzc0ZWI4MTZiNSIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzc5NDgzMDMxLCJleHAiOjE3Nzk1Njk0MzF9.YR94KisoGpgjaDg34tPzFqD78qPYxw6Q08B0dfCswf0"}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhMTBiYzI2ZDQ2ZDc4Nzc0ZWI4MTZiNSIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzc5NDgzMDMxLCJleHAiOjE3Nzk1Njk0MzF9.YR94KisoGpgjaDg34tPzFqD78qPYxw6Q08B0dfCswf0"}
+{"level":"info","message":"Socket disconnected: o7f1FaH1m9YFqE2RAAAT"}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5ZDk0NGYxNTQ1Zjk3YmFhNjMwMjZmYiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3OTQ4MzA2MywiZXhwIjoxNzc5NTY5NDYzfQ.Iz9R9nXuKLDHC2KzeMmU3UE96KYKe1znErosWZgVWGY"}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5ZDk0NGYxNTQ1Zjk3YmFhNjMwMjZmYiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3OTQ4MzA2MywiZXhwIjoxNzc5NTY5NDYzfQ.Iz9R9nXuKLDHC2KzeMmU3UE96KYKe1znErosWZgVWGY"}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5ZDk0NGYxNTQ1Zjk3YmFhNjMwMjZmYiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3OTQ4MzA2MywiZXhwIjoxNzc5NTY5NDYzfQ.Iz9R9nXuKLDHC2KzeMmU3UE96KYKe1znErosWZgVWGY"}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5ZDk0NGYxNTQ1Zjk3YmFhNjMwMjZmYiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3OTQ4MzA2MywiZXhwIjoxNzc5NTY5NDYzfQ.Iz9R9nXuKLDHC2KzeMmU3UE96KYKe1znErosWZgVWGY"}
+{"level":"info","message":"Socket connected: k8px7imGteoKrX74AAAW"}
+{"level":"info","message":"Socket disconnected: k8px7imGteoKrX74AAAW"}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5ZDk0NGYxNTQ1Zjk3YmFhNjMwMjZmYiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3OTQ4MzE5NywiZXhwIjoxNzc5NTY5NTk3fQ.Oi3udjs6ij_8hijwjBPWAzmYKaMVlvAOXrssE1OMn-E"}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5ZDk0NGYxNTQ1Zjk3YmFhNjMwMjZmYiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3OTQ4MzE5NywiZXhwIjoxNzc5NTY5NTk3fQ.Oi3udjs6ij_8hijwjBPWAzmYKaMVlvAOXrssE1OMn-E"}
+{"level":"info","message":"Server running on port 5000"}
+{"level":"info","message":"MongoDB Connected"}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5ZDk0NGYxNTQ1Zjk3YmFhNjMwMjZmYiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3OTQ4MzE5NywiZXhwIjoxNzc5NTY5NTk3fQ.Oi3udjs6ij_8hijwjBPWAzmYKaMVlvAOXrssE1OMn-E"}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5ZDk0NGYxNTQ1Zjk3YmFhNjMwMjZmYiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3OTQ4MzE5NywiZXhwIjoxNzc5NTY5NTk3fQ.Oi3udjs6ij_8hijwjBPWAzmYKaMVlvAOXrssE1OMn-E"}
+{"level":"info","message":"Socket connected: GpUiYO0Af4_EUGNaAAAC"}
+{"level":"info","message":"Socket disconnected: GpUiYO0Af4_EUGNaAAAC"}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5ZDk0NGYxNTQ1Zjk3YmFhNjMwMjZmYiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3OTQ4Mzk4MiwiZXhwIjoxNzc5NTcwMzgyfQ.dL4hFpQUjVfbbQMt6Knqf723kU8JubsLnuuxc5BuaAM"}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5ZDk0NGYxNTQ1Zjk3YmFhNjMwMjZmYiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3OTQ4Mzk4MiwiZXhwIjoxNzc5NTcwMzgyfQ.dL4hFpQUjVfbbQMt6Knqf723kU8JubsLnuuxc5BuaAM"}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5ZDk0NGYxNTQ1Zjk3YmFhNjMwMjZmYiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3OTQ4Mzk4MiwiZXhwIjoxNzc5NTcwMzgyfQ.dL4hFpQUjVfbbQMt6Knqf723kU8JubsLnuuxc5BuaAM"}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5ZDk0NGYxNTQ1Zjk3YmFhNjMwMjZmYiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3OTQ4Mzk4MiwiZXhwIjoxNzc5NTcwMzgyfQ.dL4hFpQUjVfbbQMt6Knqf723kU8JubsLnuuxc5BuaAM"}
+{"level":"info","message":"Server running on port 5000"}
+{"level":"info","message":"MongoDB Connected"}
+{"level":"info","message":"Server running on port 5000"}
+{"level":"info","message":"MongoDB Connected"}
+{"level":"info","message":"Server running on port 5000"}
+{"level":"info","message":"MongoDB Connected"}
+{"level":"info","message":"Server running on port 5000"}
+{"level":"info","message":"MongoDB Connected"}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5ZDk0NGYxNTQ1Zjk3YmFhNjMwMjZmYiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3OTQ4Mzk4MiwiZXhwIjoxNzc5NTcwMzgyfQ.dL4hFpQUjVfbbQMt6Knqf723kU8JubsLnuuxc5BuaAM"}
+{"level":"error","message":"EmergencyRequest validation failed: emergencyType: `FIRE` is not a valid enum value for path `emergencyType`.","stack":"ValidationError: EmergencyRequest validation failed: emergencyType: `FIRE` is not a valid enum value for path `emergencyType`.\n    at Document.invalidate (C:\\Users\\This PC\\OneDrive\\Desktop\\JAVA Coding\\JAVA Coding\\New folder\\AI-AMBULANCE-DISPATCH-SYSTEM\\backend\\node_modules\\mongoose\\lib\\document.js:3420:32)\n    at validatePath (C:\\Users\\This PC\\OneDrive\\Desktop\\JAVA Coding\\JAVA Coding\\New folder\\AI-AMBULANCE-DISPATCH-SYSTEM\\backend\\node_modules\\mongoose\\lib\\document.js:3192:13)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async Promise.all (index 1)\n    at async model.$__validate (C:\\Users\\This PC\\OneDrive\\Desktop\\JAVA Coding\\JAVA Coding\\New folder\\AI-AMBULANCE-DISPATCH-SYSTEM\\backend\\node_modules\\mongoose\\lib\\document.js:3133:3)\n    at async model.validate (C:\\Users\\This PC\\OneDrive\\Desktop\\JAVA Coding\\JAVA Coding\\New folder\\AI-AMBULANCE-DISPATCH-SYSTEM\\backend\\node_modules\\mongoose\\lib\\document.js:2702:5)\n    at async model.validateBeforeSavePreSave (C:\\Users\\This PC\\OneDrive\\Desktop\\JAVA Coding\\JAVA Coding\\New folder\\AI-AMBULANCE-DISPATCH-SYSTEM\\backend\\node_modules\\mongoose\\lib\\plugins\\validateBeforeSave.js:39:5)\n    at async Kareem.execPre (C:\\Users\\This PC\\OneDrive\\Desktop\\JAVA Coding\\JAVA Coding\\New folder\\AI-AMBULANCE-DISPATCH-SYSTEM\\backend\\node_modules\\kareem\\index.js:70:24)\n    at async model.$__save (C:\\Users\\This PC\\OneDrive\\Desktop\\JAVA Coding\\JAVA Coding\\New folder\\AI-AMBULANCE-DISPATCH-SYSTEM\\backend\\node_modules\\mongoose\\lib\\model.js:376:5)\n    at async model.save (C:\\Users\\This PC\\OneDrive\\Desktop\\JAVA Coding\\JAVA Coding\\New folder\\AI-AMBULANCE-DISPATCH-SYSTEM\\backend\\node_modules\\mongoose\\lib\\model.js:642:5)","statusCode":500}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5ZDk0NGYxNTQ1Zjk3YmFhNjMwMjZmYiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3OTQ4Mzk4MiwiZXhwIjoxNzc5NTcwMzgyfQ.dL4hFpQUjVfbbQMt6Knqf723kU8JubsLnuuxc5BuaAM"}
+{"level":"error","message":"EmergencyRequest validation failed: emergencyType: `FIRE` is not a valid enum value for path `emergencyType`.","stack":"ValidationError: EmergencyRequest validation failed: emergencyType: `FIRE` is not a valid enum value for path `emergencyType`.\n    at Document.invalidate (C:\\Users\\This PC\\OneDrive\\Desktop\\JAVA Coding\\JAVA Coding\\New folder\\AI-AMBULANCE-DISPATCH-SYSTEM\\backend\\node_modules\\mongoose\\lib\\document.js:3420:32)\n    at validatePath (C:\\Users\\This PC\\OneDrive\\Desktop\\JAVA Coding\\JAVA Coding\\New folder\\AI-AMBULANCE-DISPATCH-SYSTEM\\backend\\node_modules\\mongoose\\lib\\document.js:3192:13)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async Promise.all (index 1)\n    at async model.$__validate (C:\\Users\\This PC\\OneDrive\\Desktop\\JAVA Coding\\JAVA Coding\\New folder\\AI-AMBULANCE-DISPATCH-SYSTEM\\backend\\node_modules\\mongoose\\lib\\document.js:3133:3)\n    at async model.validate (C:\\Users\\This PC\\OneDrive\\Desktop\\JAVA Coding\\JAVA Coding\\New folder\\AI-AMBULANCE-DISPATCH-SYSTEM\\backend\\node_modules\\mongoose\\lib\\document.js:2702:5)\n    at async model.validateBeforeSavePreSave (C:\\Users\\This PC\\OneDrive\\Desktop\\JAVA Coding\\JAVA Coding\\New folder\\AI-AMBULANCE-DISPATCH-SYSTEM\\backend\\node_modules\\mongoose\\lib\\plugins\\validateBeforeSave.js:39:5)\n    at async Kareem.execPre (C:\\Users\\This PC\\OneDrive\\Desktop\\JAVA Coding\\JAVA Coding\\New folder\\AI-AMBULANCE-DISPATCH-SYSTEM\\backend\\node_modules\\kareem\\index.js:70:24)\n    at async model.$__save (C:\\Users\\This PC\\OneDrive\\Desktop\\JAVA Coding\\JAVA Coding\\New folder\\AI-AMBULANCE-DISPATCH-SYSTEM\\backend\\node_modules\\mongoose\\lib\\model.js:376:5)\n    at async model.save (C:\\Users\\This PC\\OneDrive\\Desktop\\JAVA Coding\\JAVA Coding\\New folder\\AI-AMBULANCE-DISPATCH-SYSTEM\\backend\\node_modules\\mongoose\\lib\\model.js:642:5)","statusCode":500}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5ZDk0NGYxNTQ1Zjk3YmFhNjMwMjZmYiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3OTQ4Mzk4MiwiZXhwIjoxNzc5NTcwMzgyfQ.dL4hFpQUjVfbbQMt6Knqf723kU8JubsLnuuxc5BuaAM"}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5ZDk0NGYxNTQ1Zjk3YmFhNjMwMjZmYiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3OTQ4Mzk4MiwiZXhwIjoxNzc5NTcwMzgyfQ.dL4hFpQUjVfbbQMt6Knqf723kU8JubsLnuuxc5BuaAM"}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5ZDk0NGYxNTQ1Zjk3YmFhNjMwMjZmYiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3OTQ4Mzk4MiwiZXhwIjoxNzc5NTcwMzgyfQ.dL4hFpQUjVfbbQMt6Knqf723kU8JubsLnuuxc5BuaAM"}
+{"level":"error","message":"EmergencyRequest validation failed: emergencyType: `ACCIDENT` is not a valid enum value for path `emergencyType`.","stack":"ValidationError: EmergencyRequest validation failed: emergencyType: `ACCIDENT` is not a valid enum value for path `emergencyType`.\n    at Document.invalidate (C:\\Users\\This PC\\OneDrive\\Desktop\\JAVA Coding\\JAVA Coding\\New folder\\AI-AMBULANCE-DISPATCH-SYSTEM\\backend\\node_modules\\mongoose\\lib\\document.js:3420:32)\n    at validatePath (C:\\Users\\This PC\\OneDrive\\Desktop\\JAVA Coding\\JAVA Coding\\New folder\\AI-AMBULANCE-DISPATCH-SYSTEM\\backend\\node_modules\\mongoose\\lib\\document.js:3192:13)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async Promise.all (index 1)\n    at async model.$__validate (C:\\Users\\This PC\\OneDrive\\Desktop\\JAVA Coding\\JAVA Coding\\New folder\\AI-AMBULANCE-DISPATCH-SYSTEM\\backend\\node_modules\\mongoose\\lib\\document.js:3133:3)\n    at async model.validate (C:\\Users\\This PC\\OneDrive\\Desktop\\JAVA Coding\\JAVA Coding\\New folder\\AI-AMBULANCE-DISPATCH-SYSTEM\\backend\\node_modules\\mongoose\\lib\\document.js:2702:5)\n    at async model.validateBeforeSavePreSave (C:\\Users\\This PC\\OneDrive\\Desktop\\JAVA Coding\\JAVA Coding\\New folder\\AI-AMBULANCE-DISPATCH-SYSTEM\\backend\\node_modules\\mongoose\\lib\\plugins\\validateBeforeSave.js:39:5)\n    at async Kareem.execPre (C:\\Users\\This PC\\OneDrive\\Desktop\\JAVA Coding\\JAVA Coding\\New folder\\AI-AMBULANCE-DISPATCH-SYSTEM\\backend\\node_modules\\kareem\\index.js:70:24)\n    at async model.$__save (C:\\Users\\This PC\\OneDrive\\Desktop\\JAVA Coding\\JAVA Coding\\New folder\\AI-AMBULANCE-DISPATCH-SYSTEM\\backend\\node_modules\\mongoose\\lib\\model.js:376:5)\n    at async model.save (C:\\Users\\This PC\\OneDrive\\Desktop\\JAVA Coding\\JAVA Coding\\New folder\\AI-AMBULANCE-DISPATCH-SYSTEM\\backend\\node_modules\\mongoose\\lib\\model.js:642:5)","statusCode":500}
+{"level":"info","message":"Socket connected: LN1VPwJXwFfMlhbkAAAC"}
+{"level":"info","message":"Server running on port 5000"}
+{"level":"info","message":"Socket connected: Yao90fymkDrY5BYPAAAB"}
+{"level":"info","message":"MongoDB Connected"}
+{"level":"info","message":"Server running on port 5000"}
+{"level":"info","message":"MongoDB Connected"}
+{"level":"info","message":"Socket connected: Udya4L4AkFr3GIfiAAAB"}
+{"level":"info","message":"Socket disconnected: Udya4L4AkFr3GIfiAAAB"}
+{"level":"info","message":"Socket connected: QvxIxB1UKeKn-44HAAAE"}
+{"level":"info","message":"Socket disconnected: QvxIxB1UKeKn-44HAAAE"}
+{"level":"info","message":"Socket connected: kKtkmWISBoZxkln6AAAH"}
+{"level":"info","message":"Socket disconnected: kKtkmWISBoZxkln6AAAH"}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5ZDk0NGYxNTQ1Zjk3YmFhNjMwMjZmYiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3OTQ4NTA0NywiZXhwIjoxNzc5NTcxNDQ3fQ.smspi5ACQ0tYgzEz057kE7y0tz05C-OG4C3uK9nUq-E"}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5ZDk0NGYxNTQ1Zjk3YmFhNjMwMjZmYiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3OTQ4NTA0NywiZXhwIjoxNzc5NTcxNDQ3fQ.smspi5ACQ0tYgzEz057kE7y0tz05C-OG4C3uK9nUq-E"}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5ZDk0NGYxNTQ1Zjk3YmFhNjMwMjZmYiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3OTQ4NTA0NywiZXhwIjoxNzc5NTcxNDQ3fQ.smspi5ACQ0tYgzEz057kE7y0tz05C-OG4C3uK9nUq-E"}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5ZDk0NGYxNTQ1Zjk3YmFhNjMwMjZmYiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3OTQ4NTA0NywiZXhwIjoxNzc5NTcxNDQ3fQ.smspi5ACQ0tYgzEz057kE7y0tz05C-OG4C3uK9nUq-E"}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5ZDk0NGYxNTQ1Zjk3YmFhNjMwMjZmYiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3OTQ4NTA0NywiZXhwIjoxNzc5NTcxNDQ3fQ.smspi5ACQ0tYgzEz057kE7y0tz05C-OG4C3uK9nUq-E"}
+{"level":"error","message":"EmergencyRequest validation failed: emergencyType: `ACCIDENT` is not a valid enum value for path `emergencyType`.","stack":"ValidationError: EmergencyRequest validation failed: emergencyType: `ACCIDENT` is not a valid enum value for path `emergencyType`.\n    at Document.invalidate (C:\\Users\\This PC\\OneDrive\\Desktop\\JAVA Coding\\JAVA Coding\\New folder\\AI-AMBULANCE-DISPATCH-SYSTEM\\backend\\node_modules\\mongoose\\lib\\document.js:3420:32)\n    at validatePath (C:\\Users\\This PC\\OneDrive\\Desktop\\JAVA Coding\\JAVA Coding\\New folder\\AI-AMBULANCE-DISPATCH-SYSTEM\\backend\\node_modules\\mongoose\\lib\\document.js:3192:13)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async Promise.all (index 1)\n    at async model.$__validate (C:\\Users\\This PC\\OneDrive\\Desktop\\JAVA Coding\\JAVA Coding\\New folder\\AI-AMBULANCE-DISPATCH-SYSTEM\\backend\\node_modules\\mongoose\\lib\\document.js:3133:3)\n    at async model.validate (C:\\Users\\This PC\\OneDrive\\Desktop\\JAVA Coding\\JAVA Coding\\New folder\\AI-AMBULANCE-DISPATCH-SYSTEM\\backend\\node_modules\\mongoose\\lib\\document.js:2702:5)\n    at async model.validateBeforeSavePreSave (C:\\Users\\This PC\\OneDrive\\Desktop\\JAVA Coding\\JAVA Coding\\New folder\\AI-AMBULANCE-DISPATCH-SYSTEM\\backend\\node_modules\\mongoose\\lib\\plugins\\validateBeforeSave.js:39:5)\n    at async Kareem.execPre (C:\\Users\\This PC\\OneDrive\\Desktop\\JAVA Coding\\JAVA Coding\\New folder\\AI-AMBULANCE-DISPATCH-SYSTEM\\backend\\node_modules\\kareem\\index.js:70:24)\n    at async model.$__save (C:\\Users\\This PC\\OneDrive\\Desktop\\JAVA Coding\\JAVA Coding\\New folder\\AI-AMBULANCE-DISPATCH-SYSTEM\\backend\\node_modules\\mongoose\\lib\\model.js:376:5)\n    at async model.save (C:\\Users\\This PC\\OneDrive\\Desktop\\JAVA Coding\\JAVA Coding\\New folder\\AI-AMBULANCE-DISPATCH-SYSTEM\\backend\\node_modules\\mongoose\\lib\\model.js:642:5)","statusCode":500}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5ZDk0NGYxNTQ1Zjk3YmFhNjMwMjZmYiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3OTQ4NTA0NywiZXhwIjoxNzc5NTcxNDQ3fQ.smspi5ACQ0tYgzEz057kE7y0tz05C-OG4C3uK9nUq-E"}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5ZDk0NGYxNTQ1Zjk3YmFhNjMwMjZmYiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3OTQ4NTA0NywiZXhwIjoxNzc5NTcxNDQ3fQ.smspi5ACQ0tYgzEz057kE7y0tz05C-OG4C3uK9nUq-E"}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5ZDk0NGYxNTQ1Zjk3YmFhNjMwMjZmYiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3OTQ4NTA0NywiZXhwIjoxNzc5NTcxNDQ3fQ.smspi5ACQ0tYgzEz057kE7y0tz05C-OG4C3uK9nUq-E"}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5ZDk0NGYxNTQ1Zjk3YmFhNjMwMjZmYiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3OTQ4NTA0NywiZXhwIjoxNzc5NTcxNDQ3fQ.smspi5ACQ0tYgzEz057kE7y0tz05C-OG4C3uK9nUq-E"}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5ZDk0NGYxNTQ1Zjk3YmFhNjMwMjZmYiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3OTQ4NTA0NywiZXhwIjoxNzc5NTcxNDQ3fQ.smspi5ACQ0tYgzEz057kE7y0tz05C-OG4C3uK9nUq-E"}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5ZDk0NGYxNTQ1Zjk3YmFhNjMwMjZmYiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3OTQ4NTA0NywiZXhwIjoxNzc5NTcxNDQ3fQ.smspi5ACQ0tYgzEz057kE7y0tz05C-OG4C3uK9nUq-E"}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5ZDk0NGYxNTQ1Zjk3YmFhNjMwMjZmYiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3OTQ4NTA0NywiZXhwIjoxNzc5NTcxNDQ3fQ.smspi5ACQ0tYgzEz057kE7y0tz05C-OG4C3uK9nUq-E"}
+{"level":"info","message":"Auth Header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5ZDk0NGYxNTQ1Zjk3YmFhNjMwMjZmYiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3OTQ4NTA0NywiZXhwIjoxNzc5NTcxNDQ3fQ.smspi5ACQ0tYgzEz057kE7y0tz05C-OG4C3uK9nUq-E"}
+{"level":"info","message":"Socket connected: IcsNENG6ssDK-GivAAAK"}

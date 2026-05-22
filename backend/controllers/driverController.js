@@ -1,212 +1,467 @@
 import asyncHandler from "express-async-handler";
+
 import Driver from "../models/Driver.js";
+
 import EmergencyRequest from "../models/EmergencyRequest.js";
+
 import { REQUEST_STATUS } from "../constants/enums.js";
 
 // ==========================================
-// 🚑 CREATE DRIVER (Admin) ✅ FIXED
+// 🚑 CREATE DRIVER
 // ==========================================
-export const createDriver = asyncHandler(async (req, res) => {
-    const { userId, vehicleNumber, location } = req.body;
+export const createDriver =
+    asyncHandler(async (req, res) => {
 
-    if (!userId) {
-        res.status(400);
-        throw new Error("userId is required");
-    }
+        const {
+            userId,
+            vehicleNumber,
+            location,
+        } = req.body;
 
-    const existingDriver = await Driver.findOne({ user: userId });
+        // 🚨 VALIDATION
+        if (!userId) {
 
-    if (existingDriver) {
-        res.status(400);
-        throw new Error("Driver already exists");
-    }
+            res.status(400);
 
-    const driver = await Driver.create({
-        user: userId,
-        vehicleNumber,
-        location: {
-            type: "Point",
-            coordinates: location || [0, 0],
-        },
-        isAvailable: true,
+            throw new Error(
+                "userId is required"
+            );
+        }
+
+        // 🚫 CHECK EXISTING
+        const existingDriver =
+            await Driver.findOne({
+                user: userId,
+            });
+
+        if (existingDriver) {
+
+            res.status(400);
+
+            throw new Error(
+                "Driver already exists"
+            );
+        }
+
+        // 🚑 CREATE DRIVER
+        const driver =
+            await Driver.create({
+
+                user: userId,
+
+                vehicleNumber,
+
+                location: {
+                    type: "Point",
+
+                    coordinates:
+                        location || [0, 0],
+                },
+
+                isAvailable: true,
+            });
+
+        res.status(201).json({
+
+            success: true,
+
+            message:
+                "Driver created successfully",
+
+            data: driver,
+        });
     });
 
-    res.status(201).json({
-        success: true,
-        message: "Driver created successfully",
-        data: driver,
-    });
-});
-
 // ==========================================
-// 🚑 GET ALL DRIVERS (Admin)
+// 🚑 GET ALL DRIVERS
 // ==========================================
-export const getDrivers = asyncHandler(async (req, res) => {
-    const drivers = await Driver.find()
-        .populate("user", "name email")
-        .sort({ createdAt: -1 });
+export const getDrivers =
+    asyncHandler(async (req, res) => {
 
-    res.status(200).json({
-        success: true,
-        message: "Drivers fetched successfully",
-        data: { drivers },
-    });
-});
+        const drivers =
+            await Driver.find()
 
-// ==========================================
-// ✅ GET ASSIGNED REQUESTS (Driver) 🔥 FIXED
-// ==========================================
-export const getAssignedRequests = asyncHandler(async (req, res) => {
-    // 🔥 FIND DRIVER USING USER ID
-    const driver = await Driver.findOne({ user: req.user._id });
+                .populate(
+                    "user",
+                    "name email role"
+                )
 
-    if (!driver) {
-        res.status(404);
-        throw new Error("Driver not found");
-    }
+                .sort({
+                    createdAt: -1,
+                });
 
-    // 🔥 MATCH WITH DRIVER._id (NOT USER ID)
-    const requests = await EmergencyRequest.find({
-        assignedDriver: driver._id
-    })
-        .populate("user", "name email phone")
-        .sort({ createdAt: -1 });
+        res.status(200).json({
 
-    res.status(200).json({
-        success: true,
-        message: "Assigned requests fetched successfully",
-        data: requests
-    });
-});
+            success: true,
 
-// ==========================================
-// 🚑 UPDATE REQUEST STATUS (Driver)
-// ==========================================
-export const updateRequestStatus = asyncHandler(async (req, res) => {
-    const { id } = req.params;
-    const { status } = req.body;
+            count: drivers.length,
 
-    const driver = await Driver.findOne({ user: req.user._id });
-
-    if (!driver) {
-        res.status(404);
-        throw new Error("Driver not found");
-    }
-
-    const request = await EmergencyRequest.findById(id);
-
-    if (!request) {
-        res.status(404);
-        throw new Error("Request not found");
-    }
-
-    // 🔥 FIX: CHECK USING DRIVER._id
-    if (
-        !request.assignedDriver ||
-        request.assignedDriver.toString() !== driver._id.toString()
-    ) {
-        res.status(403);
-        throw new Error("Not authorized for this request");
-    }
-
-    request.status = status;
-
-    request.history.push({
-        status,
-        changedAt: new Date(),
-        changedBy: req.user._id,
+            data: {
+                drivers,
+            },
+        });
     });
 
-    await request.save();
+// ==========================================
+// 🚑 GET DRIVER PROFILE
+// ==========================================
+export const getMyDriverProfile =
+    asyncHandler(async (req, res) => {
 
-    const io = req.app.get("io");
-    if (io) {
-        io.emit("status_update", request);
-        io.to(`user:${request.user}`).emit("status_update", request);
-    }
+        const driver =
+            await Driver.findOne({
+                user: req.user._id,
+            })
 
-    res.status(200).json({
-        success: true,
-        message: "Request status updated successfully",
-        data: request
+                .populate(
+                    "user",
+                    "name email role"
+                );
+
+        if (!driver) {
+
+            res.status(404);
+
+            throw new Error(
+                "Driver not found"
+            );
+        }
+
+        res.status(200).json({
+
+            success: true,
+
+            data: driver,
+        });
     });
-});
+
+// ==========================================
+// 🚑 GET ASSIGNED REQUESTS
+// ==========================================
+export const getAssignedRequests =
+    asyncHandler(async (req, res) => {
+
+        // 🚑 FIND DRIVER
+        const driver =
+            await Driver.findOne({
+                user: req.user._id,
+            });
+
+        if (!driver) {
+
+            res.status(404);
+
+            throw new Error(
+                "Driver not found"
+            );
+        }
+
+        // 🚨 FETCH REQUESTS
+        const requests =
+            await EmergencyRequest.find({
+
+                assignedDriver:
+                    driver._id,
+            })
+
+                .populate(
+                    "user",
+                    "name email phone"
+                )
+
+                .sort({
+                    createdAt: -1,
+                });
+
+        res.status(200).json({
+
+            success: true,
+
+            count: requests.length,
+
+            data: requests,
+        });
+    });
+
+// ==========================================
+// 🚑 UPDATE REQUEST STATUS
+// ==========================================
+export const updateRequestStatus =
+    asyncHandler(async (req, res) => {
+
+        const { id } = req.params;
+
+        const { status } = req.body;
+
+        // 🚑 FIND DRIVER
+        const driver =
+            await Driver.findOne({
+                user: req.user._id,
+            });
+
+        if (!driver) {
+
+            res.status(404);
+
+            throw new Error(
+                "Driver not found"
+            );
+        }
+
+        // 🚨 FIND REQUEST
+        const request =
+            await EmergencyRequest.findById(
+                id
+            );
+
+        if (!request) {
+
+            res.status(404);
+
+            throw new Error(
+                "Request not found"
+            );
+        }
+
+        // 🚫 AUTH CHECK
+        if (
+
+            !request.assignedDriver ||
+
+            request.assignedDriver.toString()
+            !== driver._id.toString()
+
+        ) {
+
+            res.status(403);
+
+            throw new Error(
+                "Not authorized for this request"
+            );
+        }
+
+        // 🔥 UPDATE STATUS
+        request.status = status;
+
+        // 📝 HISTORY TRACK
+        request.history.push({
+
+            status,
+
+            changedAt: new Date(),
+
+            changedBy: req.user._id,
+        });
+
+        // 🚑 DRIVER AVAILABLE AGAIN
+        if (
+            status ===
+            REQUEST_STATUS.COMPLETED
+        ) {
+
+            driver.isAvailable = true;
+
+            await driver.save();
+        }
+
+        await request.save();
+
+        // ==========================================
+        // 🔥 SOCKET.IO REAL-TIME EVENTS
+        // ==========================================
+        const io = req.app.get("io");
+
+        if (io) {
+
+            // 👤 SEND TO USER
+            io.to(
+                `user:${request.user}`
+            ).emit(
+                "status_update",
+                request
+            );
+
+            // 🚨 SEND TO ADMIN
+            io.to("admin").emit(
+                "status_update",
+                request
+            );
+
+            // 🚑 SEND TO DRIVER
+            io.to(
+                `driver:${driver._id}`
+            ).emit(
+                "status_update",
+                request
+            );
+        }
+
+        res.status(200).json({
+
+            success: true,
+
+            message:
+                "Request status updated",
+
+            data: request,
+        });
+    });
 
 // ==========================================
 // 📍 UPDATE DRIVER LOCATION
 // ==========================================
-export const updateDriverLocation = asyncHandler(async (req, res) => {
-    const { coordinates } = req.body;
+export const updateDriverLocation =
+    asyncHandler(async (req, res) => {
 
-    if (!coordinates || coordinates.length !== 2) {
-        res.status(400);
-        throw new Error("Valid coordinates required");
-    }
+        const {
+            latitude,
+            longitude,
+        } = req.body;
 
-    const driver = await Driver.findOne({ user: req.user._id });
+        // 🚨 VALIDATION
+        if (
+            latitude === undefined ||
+            longitude === undefined
+        ) {
 
-    if (!driver) {
-        res.status(404);
-        throw new Error("Driver not found");
-    }
+            res.status(400);
 
-    driver.location = {
-        type: "Point",
-        coordinates
-    };
+            throw new Error(
+                "Latitude & Longitude required"
+            );
+        }
 
-    await driver.save();
+        // 🚑 FIND DRIVER
+        const driver =
+            await Driver.findOne({
+                user: req.user._id,
+            });
 
-    const io = req.app.get("io");
-    if (io) {
-        io.to("admin").emit("location_update", {
-            driverId: driver._id,
-            coordinates
+        if (!driver) {
+
+            res.status(404);
+
+            throw new Error(
+                "Driver not found"
+            );
+        }
+
+        // 📍 UPDATE LOCATION
+        driver.location = {
+
+            type: "Point",
+
+            coordinates: [
+                longitude,
+                latitude,
+            ],
+        };
+
+        await driver.save();
+
+        // 🚨 FIND ACTIVE REQUEST
+        const activeRequest =
+            await EmergencyRequest.findOne({
+
+                assignedDriver:
+                    driver._id,
+
+                status: {
+                    $ne:
+                        REQUEST_STATUS.COMPLETED,
+                },
+            });
+
+        // ==========================================
+        // 🔥 SOCKET.IO LOCATION UPDATE
+        // ==========================================
+        const io = req.app.get("io");
+
+        if (io) {
+
+            const payload = {
+
+                driverId: driver._id,
+
+                coordinates: [
+                    latitude,
+                    longitude,
+                ],
+            };
+
+            // 🚨 ADMIN ROOM
+            io.to("admin").emit(
+                "location_update",
+                payload
+            );
+
+            // 👤 USER ROOM
+            if (activeRequest) {
+
+                io.to(
+                    `user:${activeRequest.user}`
+                ).emit(
+                    "location_update",
+                    payload
+                );
+            }
+
+            // 🚑 DRIVER ROOM
+            io.to(
+                `driver:${driver._id}`
+            ).emit(
+                "location_update",
+                payload
+            );
+        }
+
+        res.status(200).json({
+
+            success: true,
+
+            message:
+                "Driver location updated",
+
+            data: driver,
         });
-    }
-
-    res.status(200).json({
-        success: true,
-        message: "Location updated successfully",
-        data: driver
     });
-});
 
 // ==========================================
-// 🟢 TOGGLE DRIVER AVAILABILITY
+// 🔁 TOGGLE AVAILABILITY
 // ==========================================
-export const toggleAvailability = asyncHandler(async (req, res) => {
-    const driver = await Driver.findOne({ user: req.user._id });
+export const toggleAvailability =
+    asyncHandler(async (req, res) => {
 
-    if (!driver) {
-        res.status(404);
-        throw new Error("Driver not found");
-    }
+        const driver =
+            await Driver.findOne({
+                user: req.user._id,
+            });
 
-    driver.isAvailable = !driver.isAvailable;
+        if (!driver) {
 
-    await driver.save();
+            res.status(404);
 
-    res.status(200).json({
-        success: true,
-        message: "Driver availability updated successfully",
-        data: driver
+            throw new Error(
+                "Driver not found"
+            );
+        }
+
+        // 🔥 TOGGLE
+        driver.isAvailable =
+            !driver.isAvailable;
+
+        await driver.save();
+
+        res.status(200).json({
+
+            success: true,
+
+            message:
+                `Driver is now ${driver.isAvailable
+                    ? "AVAILABLE"
+                    : "BUSY"
+                }`,
+
+            data: driver,
+        });
     });
-});
-
-// ==========================================
-// 👤 GET MY DRIVER PROFILE
-// ==========================================
-export const getMyDriverProfile = asyncHandler(async (req, res) => {
-    const driver = await Driver.findOne({ user: req.user._id });
-
-    if (!driver) {
-        res.status(404);
-        throw new Error("Driver not found");
-    }
-
-    res.status(200).json({
-        success: true,
-        data: driver,
-    });
-});
